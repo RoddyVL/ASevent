@@ -13,4 +13,8 @@ Rails.application.routes.draw do
       resources :bookings, only: %i[index new create]
     end
   end
+
+  resources :clients, only: [] do
+    resources :bookings, only: [:index]
+  end
 end
