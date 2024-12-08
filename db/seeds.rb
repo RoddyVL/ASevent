@@ -6,68 +6,86 @@ Client.destroy_all
 
 # Création des photobooths
 photobooth1 = Photobooth.create!(
-  name: "Photobooth Luxe",
-  description: "Photobooth élégant pour les mariages et événements VIP.",
-  image_url: "https://example.com/images/luxe.jpg",
-  review: "5 stars"
-)
-
-photobooth2 = Photobooth.create!(
-  name: "Photobooth Standard",
-  description: "Photobooth pour tous types d'événements.",
-  image_url: "https://example.com/images/standard.jpg",
+  name: "Photobooth",
+  description: "Photobooth – Capturez l'instant avec style et simplicité ! Ajoutez une touche de fun...",
+  image_url: "photobooth.jpg",
   review: "4 stars"
 )
 
-# Création des packages
-package1 = Package.create!(
-  hour: Time.parse("01:00"),  # Utilisation de Time.parse pour un format valide
-  price: 100,
-  overtime: Time.parse("00:30"),
-  photobooth_id: photobooth1.id
+photobooth2 = Photobooth.create!(
+  name: "360booth",
+  description: "360booth – Capturez chaque angle de votre événement avec une expérience photo immersive...",
+  image_url: "p360.jpg",
+  review: "4 stars"
 )
 
-package2 = Package.create!(
-  hour: Time.parse("02:00"),
-  price: 180,
-  overtime: Time.parse("01:00"),
-  photobooth_id: photobooth2.id
+photobooth3 = Photobooth.create!(
+  name: "Miroir",
+  description: "Miroir Photobooth – Une expérience interactive inédite pour vos événements...",
+  image_url: "miroir.jpg",
+  review: "4 stars"
 )
+
+# Packages pour photobooth
+packages_photobooth = [
+  { hour: "2h", price: 250 },
+  { hour: "3h", price: 180 },
+  { hour: "5h", price: 400 }
+]
+
+packages_photobooth.each do |pkg|
+  photobooth1.packages.create!(pkg)
+end
+
+# Packages pour 360booth
+packages_360 = [
+  { hour: "2h", price: 250 },
+  { hour: "3h", price: 400 },
+  { hour: "5h", price: 500 }
+]
+
+packages_360.each do |pkg|
+  photobooth2.packages.create!(pkg)
+end
+
+# Packages pour Miroir
+packages_miroir = [
+  { hour: "2h", price: 400 },
+  { hour: "3h", price: 450 },
+  { hour: "5h", price: 550 }
+]
+
+packages_miroir.each do |pkg|
+  photobooth3.packages.create!(pkg)
+end
 
 # Création des clients
-client1 = Client.create!(
-  first_name: "John",
-  last_name: "Doe",
-  email: "john.doe@example.com",
-  phone_number: "+1234567890"
-)
+clients = [
+  { first_name: "John", last_name: "Doe", email: "john.doe@example.com", phone_number: "+1234567890" },
+  { first_name: "Jane", last_name: "Smith", email: "jane.smith@example.com", phone_number: "+0987654321" }
+]
 
-client2 = Client.create!(
-  first_name: "Jane",
-  last_name: "Smith",
-  email: "jane.smith@example.com",
-  phone_number: "+0987654321"
-)
+clients.each { |client| Client.create!(client) }
 
 # Création des bookings
 Booking.create!(
   address: "123 Rue de Paris, 75001 Paris",
   date: Date.today + 1,
-  time: Time.parse('14:00'),
-  status: 0,  # pending
-  paiement_status: 1,  # paid
-  booking_status: 0,  # confirmed
-  client_id: client1.id,
-  package_id: package1.id
+  time: "14:00",
+  status: 0,
+  paiement_status: "paid",
+  booking_status: "confirmed",
+  client: Client.first,
+  package: photobooth1.packages.first
 )
 
 Booking.create!(
   address: "456 Avenue des Champs, 75008 Paris",
   date: Date.today + 2,
-  time: Time.parse('16:00'),
-  status: 1,  # paid
-  paiement_status: 0,  # pending
-  booking_status: 1,  # cancelled
-  client_id: client2.id,
-  package_id: package2.id
+  time: "16:00",
+  status: 1,
+  paiement_status: "pending",
+  booking_status: "cancelled",
+  client: Client.last,
+  package: photobooth2.packages.second
 )
