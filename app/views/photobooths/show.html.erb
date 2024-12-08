@@ -1,2 +1,18 @@
 <%# app/views/photobooths/show.html.erb %>
-<h1>Hello from Photobooths Show</h1>
+<div class="container">
+  <div class="align-content-center">
+    <h1>Hello from Photobooths Show</h1>
+
+    <%# details du photobooth %>
+    <p><%= @photobooth.name %></p>
+    <p><%= @photobooth.image_url %></p>
+    <p><%= @photobooth.description %></p>
+    <p><%= @photobooth.review %></p>
+
+    <% @packages.each do |p|%>
+    <p><%= p.hour %></p>
+      <p><%= p.price %>€</p>
+      <%= link_to "choisir ce forfait",  photobooth_package_path(p.photobooth, p) %>
+    <% end %>
+  </div>
+</div>

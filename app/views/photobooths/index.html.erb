@@ -1,7 +1,13 @@
 <%# app/views/photobooths/index.html.erb %>
-<h1>Location photobooths près de chez vous</h1>
+<div class="container">
+  <div class="row">
+    <h1>Location photobooths près de chez vous</h1>
 
-<% @photobooths.each do |p| %>
-  <%= p.name%>
-  <%=  %>
-<% end  %>
+    <% @photobooths.each do |p| %>
+      <p><%= p.name%></p>
+      <p><%= p.image_url %></p>
+      <%= link_to "en savoir plus", photobooth_path(p), class: "btn btn-primary" %>
+
+    <% end  %>
+  </div>
+</div>
