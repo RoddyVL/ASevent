@@ -11,7 +11,11 @@ class BookingsController < ApplicationController
   end
 
   def create
-    @booking = @package.bookings.new(booking_params)
+    @photobooth = Photobooth.find(params[:photobooth_id])
+    @package = Package.find(params[:package_id])
+    @booking = Booking.new(booking_params)
+    @booking.package = @package
+
     if @booking.save
       redirect_to photobooth_package_bookings_path(@photobooth, @package), notice: 'Booking successfully created.'
     else

@@ -5,5 +5,8 @@ class PackagesController < ApplicationController
 
   def show
     @package = Package.find(params[:id])
+    @photobooth = @package.photobooth
+    @booking = Booking.new
   end
+
 end
