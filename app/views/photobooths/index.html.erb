@@ -1,13 +1,26 @@
 <%# app/views/photobooths/index.html.erb %>
-<div class="container">
-  <div class="row">
-    <h1>Location photobooths près de chez vous</h1>
+<%# app/views/photobooths/index.html.erb %>
+<div class="container mt-5">
+  <div class="text-center mb-5">
+    <h1 class="display-4">Location de Photobooths</h1>
+    <p class="text-muted">Découvrez nos photobooths disponibles près de chez vous</p>
+  </div>
 
+  <div class="row g-4">
     <% @photobooths.each do |p| %>
-      <p><%= p.name%></p>
-      <p><%= p.image_url %></p>
-      <%= link_to "en savoir plus", photobooth_path(p), class: "btn btn-primary" %>
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+          <%# Image du photobooth %>
+          <%= image_tag(asset_path(p.image_url), class: "card-img-top", alt: p.name) %>
 
-    <% end  %>
+          <%# Contenu du photobooth %>
+          <div class="card-body text-center">
+            <h5 class="card-title fw-bold text-primary"><%= p.name %></h5>
+            <%= link_to "En savoir plus", photobooth_path(p), class: "btn btn-primary mt-3" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>
+
