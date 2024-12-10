@@ -1,20 +1,39 @@
 <%# app/views/photobooths/show.html.erb %>
-<div class="container">
-  <div class="align-content-center">
-    <h1>Hello from Photobooths Show</h1>
+<div class="container mt-5">
+  <div class="text-center mb-4">
+    <h1 class="display-4">Détails du Photobooth</h1>
+    <p class="text-muted">Découvrez notre photobooth et choisissez votre forfait préféré</p>
+  </div>
 
-    <%# details du photobooth %>
-    <p><%= @photobooth.name %></p>
-    <p><%= @photobooth.image_url %></p>
-    <p><%= @photobooth.description %></p>
-    <p><%= @photobooth.review %></p>
+  <!-- Section des détails du Photobooth -->
+  <div class="card mb-4 shadow-sm">
+    <%= image_tag(asset_path(@photobooth.image_url), class: "card-img-top", alt: @photobooth.name) %>
+    <div class="card-body">
+      <h2 class="card-title text-primary"><%= @photobooth.name %></h2>
+      <p class="card-text"><%= @photobooth.description %></p>
+      <p class="text-warning"><%= @photobooth.review %></p>
+    </div>
+  </div>
 
-    <% @packages.each do |p|%>
-    <p><%= p.hour %></p>
-      <p><%= p.price %>€</p>
-      <%= link_to "choisir ce forfait", new_photobooth_package_booking_path(@photobooth, p) %>
+  <!-- Section des forfaits -->
+  <div class="row">
+    <% @packages.each do |p| %>
+      <div class="col-md-4">
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title text-secondary">Heure: <%= p.hour %></h5>
+            <p class="card-text">
+              Prix: <span class="fw-bold"><%= p.price %>€</span>
+            </p>
+            <%= link_to "Choisir ce forfait", new_photobooth_package_booking_path(@photobooth, p), class: "btn btn-primary btn-sm" %>
+          </div>
+        </div>
+      </div>
     <% end %>
+  </div>
 
-    <%= link_to "retour", root_path %>
+  <!-- Bouton de retour -->
+  <div class="text-center mt-4">
+    <%= link_to "Retour", root_path, class: "btn btn-outline-secondary mb-3" %>
   </div>
 </div>
