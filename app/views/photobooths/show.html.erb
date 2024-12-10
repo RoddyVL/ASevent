@@ -12,7 +12,7 @@
     <% @packages.each do |p|%>
     <p><%= p.hour %></p>
       <p><%= p.price %>€</p>
-      <%= link_to "choisir ce forfait",  photobooth_package_path(p.photobooth, p) %>
+      <%= link_to "choisir ce forfait", new_photobooth_package_booking_path(@photobooth, p) %>
     <% end %>
 
     <%= link_to "retour", root_path %>

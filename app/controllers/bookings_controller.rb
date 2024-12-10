@@ -2,8 +2,8 @@ class BookingsController < ApplicationController
   before_action :set_photobooth_and_package, except: :index
 
   def index
-    @client = Client.find(params[:client_id])
-    @bookings = @client.bookings
+    # @client = Client.find(params[:client_id])
+    @bookings = Booking.all
   end
 
   def new

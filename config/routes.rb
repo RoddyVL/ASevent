@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :clients, only: [] do
+  # resources :clients, only: [] do
     resources :bookings, only: [:index]
-  end
+  # end
 end

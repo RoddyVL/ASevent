@@ -1,2 +1,20 @@
 <%# app/views/bookings/index.html.erb %>
-<h1>Hello from booking index</h1>
+
+<div class="container mt-4">
+  <h1>Hello from booking index</h1>
+  <div class="row">
+    <% @bookings.each do |b| %>
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Réservation pour <%= b.package.hour %> - <%= b.package.price %>€</h5>
+            <p class="card-text"><strong>Adresse :</strong> <%= b.address %></p>
+            <p class="card-text"><strong>Date :</strong> <%= b.date %></p>
+            <p class="card-text"><strong>Heure :</strong> <%= b.time %></p>
+            <p class="card-text"><strong>Forfait :</strong> <%= b.package.hour %> - <%= b.package.price %>€</p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
