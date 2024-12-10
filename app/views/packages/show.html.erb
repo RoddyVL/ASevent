@@ -1,13 +1,2 @@
 <h1>Hello from packages show</h1>
 
-<h1>Forfait : <%= @package.hour %> - <%= @package.price %>€</h1>
-
-<%= simple_form_for @booking, url: photobooth_package_bookings_path(@photobooth, @package), method: :post do |f| %>
-  <%= f.input :address, label: "Adresse de l'événement", placeholder: "Entrez l'adresse" %>
-  <%= f.input :date, label: "Date de l'événement", as: :date %>
-  <%= f.input :time, label: "Heure de l'événement", as: :time %>
-
-  <%= f.input :package_id, as: :hidden, value: @package.id %>
-
-  <%= f.submit "Réserver ce forfait", class: "btn btn-primary" %>
-<% end %>
