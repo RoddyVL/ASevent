@@ -14,7 +14,7 @@ photobooth1 = Photobooth.create!(
 
 photobooth2 = Photobooth.create!(
   name: "360booth",
-  description: "360booth – Capturez chaque angle de votre événement avec une expérience photo immersive...",
+  description: "Un photobooth élégant et intemporel, idéal pour capturer des souvenirs lors de vos événements festifs",
   image_url: "p360.jpg",
   review: "4 stars"
 )
