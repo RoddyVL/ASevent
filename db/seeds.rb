@@ -2,7 +2,6 @@
 Booking.destroy_all
 Package.destroy_all
 Photobooth.destroy_all
-Client.destroy_all
 
 # Création des photobooths
 photobooth1 = Photobooth.create!(
@@ -60,32 +59,32 @@ packages_miroir.each do |pkg|
 end
 
 # Création des clients
-clients = [
-  { first_name: "John", last_name: "Doe", email: "john.doe@example.com", phone_number: "+1234567890" },
-  { first_name: "Jane", last_name: "Smith", email: "jane.smith@example.com", phone_number: "+0987654321" }
-]
+# clients = [
+#   { first_name: "John", last_name: "Doe", email: "john.doe@example.com", phone_number: "+1234567890" },
+#   { first_name: "Jane", last_name: "Smith", email: "jane.smith@example.com", phone_number: "+0987654321" }
+# ]
 
-clients.each { |client| Client.create!(client) }
+# clients.each { |client| Client.create!(client) }
 
 # Création des bookings
-Booking.create!(
-  address: "123 Rue de Paris, 75001 Paris",
-  date: Date.today + 1,
-  time: "14:00",
-  status: 0,
-  paiement_status: "paid",
-  booking_status: "confirmed",
-  client: Client.first,
-  package: photobooth1.packages.first
-)
+# Booking.create!(
+#   address: "123 Rue de Paris, 75001 Paris",
+#   date: Date.today + 1,
+#   time: "14:00",
+#   status: 0,
+#   paiement_status: "paid",
+#   booking_status: "confirmed",
+#   client: Client.first,
+#   package: photobooth1.packages.first
+# )
 
-Booking.create!(
-  address: "456 Avenue des Champs, 75008 Paris",
-  date: Date.today + 2,
-  time: "16:00",
-  status: 1,
-  paiement_status: "pending",
-  booking_status: "cancelled",
-  client: Client.last,
-  package: photobooth2.packages.second
-)
+# Booking.create!(
+#   address: "456 Avenue des Champs, 75008 Paris",
+#   date: Date.today + 2,
+#   time: "16:00",
+#   status: 1,
+#   paiement_status: "pending",
+#   booking_status: "cancelled",
+#   client: Client.last,
+#   package: photobooth2.packages.second
+# )
