@@ -1,4 +1,4 @@
-class Package < ApplicationRecord
+  class Package < ApplicationRecord
   belongs_to :photobooth
   has_many :bookings
 
