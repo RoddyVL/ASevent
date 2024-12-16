@@ -1,5 +1,7 @@
 class Booking < ApplicationRecord
   belongs_to :package
+  belongs_to :user
+  has_one :order
 
   enum status: { pending: 0, paid: 1, failed: 2 }
 
