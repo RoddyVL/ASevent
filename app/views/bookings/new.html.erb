@@ -7,7 +7,8 @@
 
   <div class="card shadow-lg p-4">
     <div class="card-body">
-      <h2 class="card-title text-center text-primary">Forfait : <%= @package.hour %> - <%= @package.price %>€</h2>
+      <%# <h2 class="card-title text-center text-primary">Forfait : <%= @package.hour %> -
+       <%# <%= @package.price %>
       <hr class="my-4">
 
       <%= simple_form_for @booking, url: photobooth_package_bookings_path(@photobooth, @package), method: :post do |f| %>
@@ -34,6 +35,12 @@
   </div>
 
   <div class="text-center mt-3">
-    <%= link_to 'Retour', photobooth_path(@photobooth), class: "btn btn-secondary" %>
+    <%= link_to 'Retour', bookings_path(@booking), class: "btn btn-secondary" %>
   </div>
 </div>
+
+<%= form_with url: orders_path do %>
+  <%= hidden_field_tag 'package_id', @package.id %>
+  <%= hidden_field_tag 'booking_id', @booking.id %>
+  <%= submit_tag 'Purchase', class: 'btn btn-primary' %>
+<% end %>

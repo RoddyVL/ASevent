@@ -51,6 +51,8 @@ gem "simple_form", github: "heartcombo/simple_form"
 gem "sassc-rails"
 gem 'devise'
 gem 'money-rails'
+gem 'stripe'
+
 
 
 group :development, :test do

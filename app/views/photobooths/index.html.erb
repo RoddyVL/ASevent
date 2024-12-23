@@ -16,6 +16,7 @@
           <%# Contenu du photobooth %>
           <div class="card-body text-center">
             <h5 class="card-title fw-bold text-primary"><%= p.name %></h5>
+
             <%= link_to "En savoir plus", photobooth_path(p), class: "btn btn-primary mt-3" %>
           </div>
         </div>
@@ -23,4 +24,3 @@
     <% end %>
   </div>
 </div>
-
