@@ -1,0 +1,6 @@
+require 'stripe'
+
+Stripe.api_key = ENV['STRIPE_SECRET_KEY']
+
+puts "STRIPE_PUBLISHABLE_KEY = #{ENV['STRIPE_PUBLISHABLE_KEY']}"
+puts "STRIPE_SECRET_KEY = #{ENV['STRIPE_SECRET_KEY']}"

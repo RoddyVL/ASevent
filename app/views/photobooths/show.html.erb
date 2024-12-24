@@ -21,11 +21,13 @@
       <div class="col-md-4">
         <div class="card mb-3 shadow-sm">
           <div class="card-body">
-            <h5 class="card-title text-secondary">Heure: <%= p.hour %></h5>
+            <h5 class="card-title text-secondary"><%= p.hour %></h5>
             <p class="card-text">
-              Prix: <span class="fw-bold"><%= p.price %>€</span>
+            <p><%= humanized_money_with_symbol(p.price) %></p>
+
             </p>
             <%= link_to "Choisir ce forfait", new_photobooth_package_booking_path(@photobooth, p), class: "btn btn-primary btn-sm" %>
+          
           </div>
         </div>
       </div>
