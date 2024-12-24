@@ -21,16 +21,13 @@
       <div class="col-md-4">
         <div class="card mb-3 shadow-sm">
           <div class="card-body">
-            <h5 class="card-title text-secondary">Heure: <%= p.hour %></h5>
+            <h5 class="card-title text-secondary"><%= p.hour %></h5>
             <p class="card-text">
-            <p>Amount: <%= humanized_money_with_symbol(p.price) %></p>
+            <p><%= humanized_money_with_symbol(p.price) %></p>
 
             </p>
             <%= link_to "Choisir ce forfait", new_photobooth_package_booking_path(@photobooth, p), class: "btn btn-primary btn-sm" %>
-            <%= form_with url: orders_path do %>
-              <%= hidden_field_tag 'package_id', p.id %>
-              <%= submit_tag 'Purchase', class: 'btn btn-primary' %>
-            <% end %>
+          
           </div>
         </div>
       </div>

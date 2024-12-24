@@ -8,6 +8,7 @@ class BookingsController < ApplicationController
 
   def new
     @booking = @package.bookings.new
+    @stripe_publishable_key = ENV['STRIPE_PUBLISHABLE_KEY']
   end
 
   def create
@@ -17,9 +18,27 @@ class BookingsController < ApplicationController
     @booking.package = @package
 
     if @booking.save
-      redirect_to photobooth_package_bookings_path(@photobooth, @package), notice: 'Booking successfully created.'
+      session = Stripe::Checkout::Session.create({
+        payment_method_types: ['card'],
+        line_items: [{
+          price_data: {
+            currency: 'eur',
+            product_data: {
+              name: "Réservation Photobooth",
+            },
+            unit_amount: @booking.amount_cents, # Montant de la réservation en centimes
+          },
+          quantity: 1,
+        }],
+        mode: 'payment',
+        success_url: booking_success_url,  # Remplace par ton URL de succès
+        cancel_url: booking_cancel_url,    # Remplace par ton URL d'annulation
+      })
+
+      # Rediriger vers la session Stripe
+      redirect_to session.url, allow_other_host: true
     else
-      render :new, status: :unprocessable_entity
+      render :new
     end
   end
 
