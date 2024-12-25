@@ -33,34 +33,11 @@
     </div>
   </div>
 
-  <!-- Lien retour -->
-  <div class="text-center mt-3">
-    <%= link_to 'Retour', photobooth_path(@photobooth), class: "btn btn-secondary" %>
-  </div>
+      <!-- Lien retour -->
+      <div class="text-center mt-3">
+        <%= link_to 'Retour', photobooth_path(@photobooth), class: "btn btn-secondary" %>
+      </div>
 
-  <!-- Section de paiement -->
-  <div class="card shadow-lg mt-5">
-    <div class="card-body">
-      <h2 class="text-center">Finalisez votre réservation</h2>
-      <p class="text-center"><strong>Package:</strong> <%= @package.photobooth.name %></p>
-      <p class="text-center"><strong>Prix:</strong> <%= humanized_money_with_symbol(@package.price) %></p>
-
-      <!-- Formulaire de paiement Stripe -->
-      <form action="/payments/create" method="post" class="d-flex justify-content-center">
-        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-        <input type="hidden" name="package_id" value="<%= @package.id %>">
-
-        <script
-          src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-          data-key="<%= @stripe_publishable_key %>"
-          data-amount="<%= @package.price_cents %>"
-          data-name="Réservation Photobooth"
-          data-description="<%= @package.photobooth.name %>"
-          data-currency="eur"
-          data-locale="auto">
-        </script>
-      </form>
     </div>
   </div>
 </div>
-

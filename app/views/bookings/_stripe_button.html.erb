@@ -1,0 +1,30 @@
+ <!-- Section de paiement -->
+    <div class="col-md-3">
+      <div class="card shadow-lg p-4">
+        <div class="card-body text-center">
+          <h2>Détails:</h2>
+          <%= image_tag(asset_path(@photobooth.image_url), class: "card-img-top", alt: @photobooth.name) %>
+          <p><strong>Package:</strong> <%= @package.photobooth.name %></p>
+          <p><strong>Durée:</strong> <%= @package.hour %></p>
+          <p><strong>Prix:</strong> <%= humanized_money_with_symbol(@package.price) %></p>
+
+          <!-- Formulaire de paiement Stripe -->
+      <form action="/payments/create" method="post" class="d-flex justify-content-center">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <input type="hidden" name="package_id" value="<%= @package.id %>">
+
+        <script
+          src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+          data-key="<%= @stripe_publishable_key %>"
+          data-amount="<%= @package.price_cents %>"
+          data-name="Réservation Photobooth"
+          data-description="<%= @package.photobooth.name %>"
+          data-currency="eur"
+          data-locale="auto">
+          data-label="Payer maintenant"
+
+        </script>
+      </form>
+        </div>
+      </div>
+    </div>
