@@ -17,7 +17,7 @@
 
         <div class="row g-3">
           <div class="col-md-6">
-            <%= f.input :date, label: "Date de l'événement", as: :date, input_html: { class: "form-control" } %>
+            <%= f.input :date, as: :string, input_html: { data: {controller: "datepickr"}}%>
           </div>
           <div class="col-md-6">
             <%= f.input :time, label: "Heure de l'événement", as: :time, input_html: { class: "form-control" } %>

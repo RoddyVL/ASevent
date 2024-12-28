@@ -1,7 +1,7 @@
 <%# app/views/photobooths/show.html.erb %>
 <div class="container mt-5">
   <div class="text-center mb-4">
-    <h1 class="display-4">Détails du Photobooth</h1>
+    <h1 class="display-4 text-primary"><%= @photobooth.name %></h1>
     <p class="text-muted">Découvrez notre photobooth et choisissez votre forfait préféré</p>
   </div>
 
@@ -9,8 +9,15 @@
   <div class="card mb-4 shadow-sm">
     <%= image_tag(asset_path(@photobooth.image_url), class: "card-img-top", alt: @photobooth.name) %>
     <div class="card-body">
-      <h2 class="card-title text-primary"><%= @photobooth.name %></h2>
-      <p class="card-text"><%= @photobooth.description %></p>
+      <h2 class="card-text"><%= @photobooth.description %></h2>
+
+      <div data-controller='toggle'>
+        <button class="btn btn-primary" data-action="click->toggle#fire">voir plus</button>
+        <div data-toggle-target='toggableElement' class='d-none'>
+          <%= render 'description' %>
+        </div>
+      </div>
+
       <p class="text-warning"><%= @photobooth.review %></p>
     </div>
   </div>
@@ -27,7 +34,7 @@
 
             </p>
             <%= link_to "Choisir ce forfait", new_photobooth_package_booking_path(@photobooth, p), class: "btn btn-primary btn-sm" %>
-          
+
           </div>
         </div>
       </div>
