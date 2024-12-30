@@ -8,4 +8,5 @@ class Booking < ApplicationRecord
   validates :address, presence: true
   validates :date, presence: true
   validates :time, presence: true
+  validates :package, :user, presence: true
 end

@@ -1,12 +1,12 @@
 <%# app/views/photobooths/show.html.erb %>
 <div class="container mt-5">
   <div class="text-center mb-4">
-    <h1 class="display-4 text-primary"><%= @photobooth.name %></h1>
+    <h1 class="display-4">Modèle: <span class="text-primary"><%= @photobooth.name %></span></h1>
     <p class="text-muted">Découvrez notre photobooth et choisissez votre forfait préféré</p>
   </div>
 
   <!-- Section des détails du Photobooth -->
-  <div class="card mb-4 shadow-sm">
+  <div class="card mb-4 shadow-sm custom-card">
     <%= image_tag(asset_path(@photobooth.image_url), class: "card-img-top", alt: @photobooth.name) %>
     <div class="card-body">
       <h2 class="card-text"><%= @photobooth.description %></h2>
@@ -33,13 +33,23 @@
             <p><%= humanized_money_with_symbol(p.price) %></p>
 
             </p>
-            <%= link_to "Choisir ce forfait", new_photobooth_package_booking_path(@photobooth, p), class: "btn btn-primary btn-sm" %>
+            <%= link_to "Choisir ce forfait", new_photobooth_package_booking_path(@photobooth, p),
+                        data: { turbo_frame: "new_booking" },
+            class: "btn btn-primary btn-sm" %>
 
           </div>
         </div>
       </div>
     <% end %>
   </div>
+
+
+<div>
+  <h2>Réservation</h2>
+  <%= turbo_frame_tag "new_booking" do %>
+    <p>Sélectionnez un package pour réserver.</p>
+  <% end %>
+</div>
 
   <!-- Bouton de retour -->
   <div class="text-center mt-4">

@@ -36,8 +36,13 @@ class BookingsController < ApplicationController
   end
 
   def new
-    @booking = @package.bookings.new
-    @stripe_publishable_key = ENV['STRIPE_PUBLISHABLE_KEY']
+    @package = Package.find(params[:package_id])
+    @booking = Booking.new(package: @package, user: current_user)
+
+    respond_to do |format|
+      format.html # standard behavior
+      format.turbo_stream { render partial: "bookings/form", locals: { booking: @booking, package: @package } }
+    end
   end
 
   def create
@@ -51,11 +56,15 @@ class BookingsController < ApplicationController
     @booking.booking_status ||= 0
 
     if @booking.save
-      redirect_to photobooth_package_booking_path(@photobooth, @package, @booking)
-
+      respond_to do |format|
+        format.html { redirect_to photobooth_package_booking_path(@photobooth, @package, @booking), notice: "Réservation créée avec succès." }
+        format.turbo_stream { redirect_to photobooth_package_booking_path(@photobooth, @package, @booking) }
+      end
     else
-      flash[:alert] = "Erreur lors de la création de la réservation."
-      render :new
+      respond_to do |format|
+        format.html { render :new, status: :unprocessable_entity }
+        format.turbo_stream { render :new, status: :unprocessable_entity }
+      end 
     end
   end
 
