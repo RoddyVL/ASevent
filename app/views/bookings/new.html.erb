@@ -8,16 +8,17 @@
   </div>
 
   <!-- Formulaire de réservation -->
+  <%= turbo_frame_tag "new_booking" do %>
   <div class="card shadow-lg p-4">
     <div class="card-body">
-      <%= simple_form_for @booking, url: photobooth_package_bookings_path(@photobooth, @package), method: :post do |f| %>
+      <%= simple_form_for @booking, url: photobooth_package_bookings_path(@photobooth, @package), method: :post, html: { data: { turbo: false } } do |f| %>
         <div class="mb-3">
           <%= f.input :address, label: "Adresse de l'événement", placeholder: "Entrez l'adresse", input_html: { class: "form-control" } %>
         </div>
 
         <div class="row g-3">
           <div class="col-md-6">
-            <%= f.input :date, label: "Date de l'événement", as: :date, input_html: { class: "form-control" } %>
+            <%= f.input :date, as: :string, input_html: { data: {controller: "datepickr"}}%>
           </div>
           <div class="col-md-6">
             <%= f.input :time, label: "Heure de l'événement", as: :time, input_html: { class: "form-control" } %>
@@ -32,6 +33,7 @@
       <% end %>
     </div>
   </div>
+  <% end %>
 
       <!-- Lien retour -->
       <div class="text-center mt-3">
