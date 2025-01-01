@@ -6,7 +6,7 @@
   </div>
 
   <!-- Section des détails du Photobooth -->
-  <div class="card mb-4 shadow-sm custom-card">
+  <div class="card mb-4 shadow-sm custom-card text-align-center">
     <%= image_tag(asset_path(@photobooth.image_url), class: "card-img-top", alt: @photobooth.name) %>
     <div class="card-body">
       <h2 class="card-text"><%= @photobooth.description %></h2>
