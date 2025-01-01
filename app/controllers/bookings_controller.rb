@@ -1,4 +1,5 @@
 class BookingsController < ApplicationController
+  before_action :authenticate_user!, only: [:create]
   before_action :set_photobooth_and_package, except: :index
 
   def index
@@ -64,7 +65,7 @@ class BookingsController < ApplicationController
       respond_to do |format|
         format.html { render :new, status: :unprocessable_entity }
         format.turbo_stream { render :new, status: :unprocessable_entity }
-      end 
+      end
     end
   end
 
