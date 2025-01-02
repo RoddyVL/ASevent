@@ -9,31 +9,34 @@
 
   <!-- Formulaire de réservation -->
   <%= turbo_frame_tag "new_booking" do %>
-  <div class="card shadow-lg p-4">
-    <div class="card-body">
-      <%= simple_form_for @booking, url: photobooth_package_bookings_path(@photobooth, @package), method: :post, html: { data: { turbo: false } } do |f| %>
-        <div class="mb-3">
-          <%= f.input :address, label: "Adresse de l'événement", placeholder: "Entrez l'adresse", input_html: { class: "form-control" } %>
-        </div>
+    <div class="card shadow-lg p-4">
+      <div class="card-body">
+        <%= simple_form_for [@photobooth, @package, @booking], url: photobooth_package_bookings_path(@photobooth, @package), method: :post, html: { data: { turbo: false } } do |f| %>
+          <% unless user_signed_in? %>
+            <div class="mb-3">
+              <h5>Créer un compte ou vous connecter :</h5>
 
-        <div class="row g-3">
-          <div class="col-md-6">
-            <%= f.input :date, as: :string, input_html: { data: {controller: "datepickr"}}%>
-          </div>
-          <div class="col-md-6">
-            <%= f.input :time, label: "Heure de l'événement", as: :time, input_html: { class: "form-control" } %>
-          </div>
-        </div>
+               <!-- User email and password inputs -->
+                <%= f.fields_for :user do |u| %>
+                  <%= u.input :email, label: "Adresse email", required: true, input_html: { class: "form-control" } %>
+                  <%= u.input :password, as: :password, label: "Mot de passe", required: true, input_html: { class: "form-control" } %>
+                <% end %>
+            </div>
+          <% end %>
 
-        <%= f.input :package_id, as: :hidden, value: @package.id %>
+  <%= render 'booking_fields', f: f %>
 
-        <div class="text-center mt-4">
-          <%= f.submit "Réserver ce forfait", class: "btn btn-primary btn-lg px-5" %>
-        </div>
-      <% end %>
-    </div>
+  <div class="text-center mt-4">
+    <%= f.submit user_signed_in? ? "Réserver" : "Créer un compte et réserver", class: "btn btn-primary btn-lg px-5" %>
   </div>
+<% end %>
+
+
+
+      </div>
+    </div>
   <% end %>
+
 
       <!-- Lien retour -->
       <div class="text-center mt-3">

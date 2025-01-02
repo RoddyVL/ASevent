@@ -1,5 +1,5 @@
 class BookingsController < ApplicationController
-  before_action :authenticate_user!, only: [:create]
+  before_action :allow_guest_for_booking, only: [:new, :create]
   before_action :set_photobooth_and_package, except: :index
 
   def index
@@ -15,21 +15,21 @@ class BookingsController < ApplicationController
 
      # Créer une session Stripe si la réservation n'est pas encore payée
      if @booking.paiement_status != "paid"
-      session = Stripe::Checkout::Session.create({
+       session = Stripe::Checkout::Session.create({
         payment_method_types: ['card'],
         line_items: [{
           price_data: {
             currency: 'eur',
             product_data: {
-              name: "Réservation Photobooth - #{@package.photobooth.name}",
+              name: "Réservation Photobooth - #{@package.photobooth.name}"
             },
-            unit_amount: (@package.price * 100).to_i, # Convertir le prix en centimes
+            unit_amount: (@package.price * 100).to_i # Convertir le prix en centimes
           },
-          quantity: 1,
+          quantity: 1
         }],
         mode: 'payment',
-        success_url: bookings_url(@booking),  # Redirection vers une page de succès après le paiement
-        cancel_url: bookings_url(@booking),    # Redirection vers une page d'annulation ou retour à la réservation
+        success_url: bookings_url(@booking), # Redirection vers une page de succès après le paiement
+        cancel_url: bookings_url(@booking) # Redirection vers une page d'annulation ou retour à la réservation
       })
 
       @checkout_session_url = session.url # URL pour rediriger vers la session de paiement Stripe
@@ -56,6 +56,25 @@ class BookingsController < ApplicationController
     @booking.paiement_status ||= 0
     @booking.booking_status ||= 0
 
+    # Gestion des utilisateurs non connectés
+    if current_user
+      @booking.user = current_user
+    else
+      user_params = params.require(:booking).require(:user).permit(:email, :password)
+      user = User.new(user_params)
+      if user.save
+        sign_in(user)
+        @booking.user = user
+      else
+        # Si la création échoue
+        respond_to do |format|
+          format.html { render :new, status: :unprocessable_entity }
+          format.turbo_stream { render :new, status: :unprocessable_entity }
+        end
+        return
+      end
+    end
+
     if @booking.save
       respond_to do |format|
         format.html { redirect_to photobooth_package_booking_path(@photobooth, @package, @booking), notice: "Réservation créée avec succès." }
@@ -69,7 +88,6 @@ class BookingsController < ApplicationController
     end
   end
 
-
   private
 
   def set_photobooth_and_package
@@ -79,5 +97,12 @@ class BookingsController < ApplicationController
 
   def booking_params
     params.require(:booking).permit(:address, :date, :time, :status, :paiement_status, :booking_status, :client_id)
+  end
+
+  def allow_guest_for_booking
+    return if current_user
+
+    # Ignore `authenticate_user!` pour new et create
+    true
   end
 end
