@@ -1,6 +1,12 @@
-<%# app/views/bookings/new.html.erb %>
-
 <div class="container mt-5">
+  <!-- Titre et description -->
+  <div class="text-center mb-4">
+    <h1 class="display-5">Réservation</h1>
+    <p class="text-muted">Complétez le formulaire pour réserver votre forfait.</p>
+  </div>
+
+  <!-- Formulaire de réservation -->
+  <div class="container mt-5">
   <!-- Titre et description -->
   <div class="text-center mb-4">
     <h1 class="display-5">Réservation</h1>
@@ -12,37 +18,44 @@
     <div class="card shadow-lg p-4">
       <div class="card-body">
         <%= simple_form_for [@photobooth, @package, @booking], url: photobooth_package_bookings_path(@photobooth, @package), method: :post, html: { data: { turbo: false } } do |f| %>
+
           <% unless user_signed_in? %>
             <div class="mb-3">
               <h5>Créer un compte ou vous connecter :</h5>
 
-               <!-- User email and password inputs -->
-                <%= f.fields_for :user do |u| %>
-                  <%= u.input :email, label: "Adresse email", required: true, input_html: { class: "form-control" } %>
-                  <%= u.input :password, as: :password, label: "Mot de passe", required: true, input_html: { class: "form-control" } %>
-                <% end %>
+              <%# boutons radio connexion/inscription %>
+              <div class="form-check">
+                <%= radio_button_tag :account_type, "create", checked: true, id: "create_account" %>
+                <%= label_tag :account_type_create, "Créer un compte", for: "create_account" %>
+              </div>
+
+              <div class="form-check">
+                <%= radio_button_tag :account_type, "login", id: "login_account" %>
+                <%= label_tag :account_type_login, "Se connecter", for: "login_account" %>
+              </div>
+
+              <!-- User email and password inputs -->
+              <%= f.fields_for :user do |u| %>
+                <%= u.input :email, label: "Adresse email", required: true, input_html: { class: "form-control" } %>
+                <%= u.input :password, as: :password, label: "Mot de passe", required: true, input_html: { class: "form-control" } %>
+              <% end %>
             </div>
           <% end %>
 
-  <%= render 'booking_fields', f: f %>
+          <%= render 'booking_fields', f: f %>
 
-  <div class="text-center mt-4">
-    <%= f.submit user_signed_in? ? "Réserver" : "Créer un compte et réserver", class: "btn btn-primary btn-lg px-5" %>
-  </div>
-<% end %>
-
-
-
+          <div class="text-center mt-4">
+            <%= f.submit user_signed_in? ? "Réserver" : "Créer un compte et réserver", class: "btn btn-primary btn-lg px-5" %>
+          </div>
+        <% end %>
       </div>
     </div>
   <% end %>
 
-
-      <!-- Lien retour -->
-      <div class="text-center mt-3">
-        <%= link_to 'Retour', photobooth_path(@photobooth), class: "btn btn-secondary" %>
-      </div>
-
-    </div>
+  <!-- Lien retour -->
+  <div class="text-center mt-3">
+    <%= link_to 'Retour', photobooth_path(@photobooth), class: "btn btn-secondary" %>
   </div>
+
+</div>
 </div>

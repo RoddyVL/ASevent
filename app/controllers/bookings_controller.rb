@@ -40,51 +40,57 @@ class BookingsController < ApplicationController
     @package = Package.find(params[:package_id])
     @booking = Booking.new(package: @package, user: current_user)
 
-    respond_to do |format|
-      format.html # standard behavior
-      format.turbo_stream { render partial: "bookings/form", locals: { booking: @booking, package: @package } }
+      # Si l'utilisateur a choisi de créer un compte
+    if params[:booking] && params[:booking][:account_type] == "create"
+      @user = User.new # Crée un nouvel utilisateur
+    elsif current_user
+      # Si l'utilisateur est déjà connecté, on associe l'utilisateur à la réservation
+      @user = current_user
+    # Si l'utilisateur n'est pas connecté et ne choisit pas de créer un compte
+      @user = User.new
+
+      respond_to do |format|
+        format.html # standard behavior
+        format.turbo_stream { render partial: "bookings/form", locals: { booking: @booking, package: @package } }
+      end
     end
   end
 
   def create
+    raise 
     @booking = @package.bookings.new(booking_params)
-    @booking.user = current_user # Associe le booking à l'utilisateur connecté
-    @booking.save
 
-    # Initialiser les statuts par défaut
-    @booking.status ||= 0
-    @booking.paiement_status ||= 0
-    @booking.booking_status ||= 0
-
-    # Gestion des utilisateurs non connectés
-    if current_user
+    if user_signed_in?
       @booking.user = current_user
     else
-      user_params = params.require(:booking).require(:user).permit(:email, :password)
-      user = User.new(user_params)
-      if user.save
-        sign_in(user)
-        @booking.user = user
-      else
-        # Si la création échoue
-        respond_to do |format|
-          format.html { render :new, status: :unprocessable_entity }
-          format.turbo_stream { render :new, status: :unprocessable_entity }
+      case params[:booking][:account_type]
+      when "create"
+        user_params = params.require(:booking).require(:user).permit(:email, :password)
+        user = User.new(user_params)
+        if user.save
+          sign_in(user)
+          @booking.user = user
+        else
+          render_errors(user) and return
         end
-        return
+      when "login"
+        user = User.find_by(email: params.dig(:booking, :user, :email))
+        if user&.authenticate(params.dig(:booking, :user, :password))
+          sign_in(user)
+          @booking.user = user
+        else
+          flash.now[:alert] = "Email ou mot de passe invalide."
+          render :new, status: :unprocessable_entity and return
+        end
+      else
+        render :new, status: :unprocessable_entity and return
       end
     end
 
     if @booking.save
-      respond_to do |format|
-        format.html { redirect_to photobooth_package_booking_path(@photobooth, @package, @booking), notice: "Réservation créée avec succès." }
-        format.turbo_stream { redirect_to photobooth_package_booking_path(@photobooth, @package, @booking) }
-      end
+      redirect_to photobooth_package_booking_path(@photobooth, @package, @booking), notice: "Réservation créée avec succès."
     else
-      respond_to do |format|
-        format.html { render :new, status: :unprocessable_entity }
-        format.turbo_stream { render :new, status: :unprocessable_entity }
-      end
+      render_errors(@booking)
     end
   end
 
@@ -104,5 +110,10 @@ class BookingsController < ApplicationController
 
     # Ignore `authenticate_user!` pour new et create
     true
+  end
+
+  def render_errors(record)
+    flash.now[:alert] = record.errors.full_messages.to_sentence
+    render :new, status: :unprocessable_entity
   end
 end
