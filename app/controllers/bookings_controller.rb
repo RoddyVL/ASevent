@@ -95,7 +95,7 @@ class BookingsController < ApplicationController
       Rails.logger.info "Tentative de connexion avec les paramètres : #{user_params.inspect}"
       user = User.find_by(email: user_params[:email])
 
-      if user&.authenticate(user_params[:password])
+      if user &&  user.valid_password?(user_params[:password])
         sign_in(user) # Connecte l'utilisateur
         @booking.user = user # Associe l'utilisateur à la réservation
       else
