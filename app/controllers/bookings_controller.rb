@@ -13,9 +13,9 @@ class BookingsController < ApplicationController
 
     @stripe_publishable_key = ENV['STRIPE_PUBLISHABLE_KEY']
 
-     # Créer une session Stripe si la réservation n'est pas encore payée
-     if @booking.paiement_status != "paid"
-       session = Stripe::Checkout::Session.create({
+    # Créer une session Stripe si la réservation n'est pas encore payée
+    if @booking.paiement_status != "paid"
+      session = Stripe::Checkout::Session.create({
         payment_method_types: ['card'],
         line_items: [{
           price_data: {
@@ -40,80 +40,99 @@ class BookingsController < ApplicationController
     @package = Package.find(params[:package_id])
     @booking = Booking.new(package: @package, user: current_user)
 
-      # Si l'utilisateur a choisi de créer un compte
+    # Si l'utilisateur a choisi de créer un compte
     if params[:booking] && params[:booking][:account_type] == "create"
       @user = User.new # Crée un nouvel utilisateur
     elsif current_user
       # Si l'utilisateur est déjà connecté, on associe l'utilisateur à la réservation
       @user = current_user
-    # Si l'utilisateur n'est pas connecté et ne choisit pas de créer un compte
+    else
+      # Si l'utilisateur n'est pas connecté et ne choisit pas de créer un compte
       @user = User.new
+    end
 
-      respond_to do |format|
-        format.html # standard behavior
-        format.turbo_stream { render partial: "bookings/form", locals: { booking: @booking, package: @package } }
-      end
+    respond_to do |format|
+      format.html # standard behavior
+      format.turbo_stream { render partial: "bookings/form", locals: { booking: @booking, package: @package } }
     end
   end
 
   def create
-    raise 
-    @booking = @package.bookings.new(booking_params)
+    Rails.logger.info "Paramètres bruts reçus : #{params.inspect}"
 
-    if user_signed_in?
-      @booking.user = current_user
-    else
-      case params[:booking][:account_type]
-      when "create"
-        user_params = params.require(:booking).require(:user).permit(:email, :password)
-        user = User.new(user_params)
-        if user.save
-          sign_in(user)
-          @booking.user = user
-        else
-          render_errors(user) and return
-        end
-      when "login"
-        user = User.find_by(email: params.dig(:booking, :user, :email))
-        if user&.authenticate(params.dig(:booking, :user, :password))
-          sign_in(user)
-          @booking.user = user
-        else
-          flash.now[:alert] = "Email ou mot de passe invalide."
-          render :new, status: :unprocessable_entity and return
-        end
+    # Extraire les paramètres de réservation et d'utilisateur
+    booking_params = params[:booking]
+    # user_params = booking_params[:user]
+
+    # Créer une réservation liée au package
+    @booking = @package.bookings.new(
+      address: booking_params[:address],
+      date: booking_params[:date],
+      time: DateTime.new(
+        booking_params["time(1i)"].to_i,
+        booking_params["time(2i)"].to_i,
+        booking_params["time(3i)"].to_i,
+        booking_params["time(4i)"].to_i,
+        booking_params["time(5i)"].to_i
+      )
+    )
+
+    if params[:account_type] == "create"
+      # Création d'un nouvel utilisateur
+      Rails.logger.info "Création d'un nouvel utilisateur avec les paramètres : #{user_params.inspect}"
+      user = User.new(user_params)
+
+      if user.save
+        sign_in(user) # Connecte l'utilisateur
+        @booking.user = user # Associe l'utilisateur à la réservation
+        Rails.logger.info "Utilisateur créé et connecté avec succès."
       else
+        Rails.logger.error "Échec de la création de l'utilisateur : #{user.errors.full_messages}"
+        render_errors(user) and return
+      end
+    elsif params[:account_type] == "login"
+      # Connexion d'un utilisateur existant
+      Rails.logger.info "Tentative de connexion avec les paramètres : #{user_params.inspect}"
+      user = User.find_by(email: user_params[:email])
+
+      if user&.authenticate(user_params[:password])
+        sign_in(user) # Connecte l'utilisateur
+        @booking.user = user # Associe l'utilisateur à la réservation
+      else
+        Rails.logger.error "Échec de la connexion : utilisateur introuvable ou mot de passe incorrect."
+        flash[:alert] = "Email ou mot de passe incorrect."
         render :new, status: :unprocessable_entity and return
       end
     end
 
+    # Sauvegarde de la réservation
     if @booking.save
       redirect_to photobooth_package_booking_path(@photobooth, @package, @booking), notice: "Réservation créée avec succès."
     else
+      Rails.logger.error "Échec de la sauvegarde de la réservation : #{@booking.errors.full_messages}"
       render_errors(@booking)
     end
   end
 
-  private
+private
+
+  def render_errors(record)
+    flash.now[:alert] = record.errors.full_messages.to_sentence
+    render :new, status: :unprocessable_entity
+  end
+
+  def allow_guest_for_booking
+    # Cette méthode est appelée avant certaines actions pour permettre l'accès
+    # Ignore `authenticate_user!` pour new et create
+    true
+  end
 
   def set_photobooth_and_package
     @photobooth = Photobooth.find(params[:photobooth_id])
     @package = @photobooth.packages.find(params[:package_id])
   end
 
-  def booking_params
-    params.require(:booking).permit(:address, :date, :time, :status, :paiement_status, :booking_status, :client_id)
-  end
-
-  def allow_guest_for_booking
-    return if current_user
-
-    # Ignore `authenticate_user!` pour new et create
-    true
-  end
-
-  def render_errors(record)
-    flash.now[:alert] = record.errors.full_messages.to_sentence
-    render :new, status: :unprocessable_entity
+  def user_params
+    params.require(:booking).require(:user).permit(:email, :password)
   end
 end
