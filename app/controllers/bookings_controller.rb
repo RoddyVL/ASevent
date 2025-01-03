@@ -59,6 +59,8 @@ class BookingsController < ApplicationController
   end
 
   def create
+    AdminNotifierMailer.new_booking_notification(@booking).deliver_now
+
     booking_params = params[:booking]
 
     @booking = @package.bookings.new(
@@ -113,6 +115,8 @@ class BookingsController < ApplicationController
 
     # Sauvegarde de la réservation
     if @booking.save
+      AdminNotifierMailer.new_booking_notification(@booking).deliver_now
+
       redirect_to photobooth_package_booking_path(@photobooth, @package, @booking), notice: "Réservation créée avec succès."
     else
       render_errors(@booking)
