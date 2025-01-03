@@ -1,6 +1,15 @@
 <div class="mb-3">
   <%= f.input :address, label: "Adresse de l'événement", placeholder: "Entrez l'adresse", input_html: { class: "form-control" } %>
 </div>
+<div class="mb-3">
+  <%= f.input :city, label: "ville", placeholder: "Entrez la ville", input_html: { class: "form-control" } %>
+</div>
+<div class="mb-3">
+  <%= f.input :postal_code, label: "departement", placeholder: "code postal", input_html: { class: "form-control" } %>
+</div>
+<div class="mb-3">
+  <%= f.input :phone_number, label: "contact", placeholder: "numéro de téléphone", input_html: { class: "form-control" } %>
+</div>
 <div class="row g-3">
   <div class="col-md-6">
     <%= f.input :date, as: :string, input_html: { data: { controller: "datepickr" } } %>
