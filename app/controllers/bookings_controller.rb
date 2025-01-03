@@ -1,6 +1,7 @@
 class BookingsController < ApplicationController
   before_action :allow_guest_for_booking, only: [:new, :create]
   before_action :set_photobooth_and_package, except: :index
+  before_action :check_admin, only: [:index]
 
   def index
     @bookings = Booking.all
@@ -139,5 +140,12 @@ private
 
   def user_params
     params.require(:booking).require(:user).permit(:email, :password)
+  end
+
+  def check_admin
+    unless current_user&.admin?
+      flash[:alert] = "Vous n'avez pas l'autorisation d'accéder à cette page."
+      redirect_to root_path # ou vers une autre page si nécessaire
+    end
   end
 end
