@@ -1,6 +1,7 @@
 class BookingsController < ApplicationController
   before_action :allow_guest_for_booking, only: [:new, :create]
   before_action :set_photobooth_and_package, except: :index
+  before_action :check_admin, only: [:index]
 
   def index
     @bookings = Booking.all
@@ -58,13 +59,8 @@ class BookingsController < ApplicationController
   end
 
   def create
-    Rails.logger.info "Paramètres bruts reçus : #{params.inspect}"
-
-    # Extraire les paramètres de réservation et d'utilisateur
     booking_params = params[:booking]
-    # user_params = booking_params[:user]
 
-    # Créer une réservation liée au package
     @booking = @package.bookings.new(
       address: booking_params[:address],
       date: booking_params[:date],
@@ -77,30 +73,40 @@ class BookingsController < ApplicationController
       )
     )
 
+    # Création ou connexion en fonction du choix de l'utilisateur
     if params[:account_type] == "create"
-      # Création d'un nouvel utilisateur
-      Rails.logger.info "Création d'un nouvel utilisateur avec les paramètres : #{user_params.inspect}"
-      user = User.new(user_params)
-
-      if user.save
-        sign_in(user) # Connecte l'utilisateur
-        @booking.user = user # Associe l'utilisateur à la réservation
-        Rails.logger.info "Utilisateur créé et connecté avec succès."
-      else
-        Rails.logger.error "Échec de la création de l'utilisateur : #{user.errors.full_messages}"
-        render_errors(user) and return
-      end
-    elsif params[:account_type] == "login"
-      # Connexion d'un utilisateur existant
-      Rails.logger.info "Tentative de connexion avec les paramètres : #{user_params.inspect}"
       user = User.find_by(email: user_params[:email])
 
-      if user &&  user.valid_password?(user_params[:password])
+      if user
+        # Si l'email existe déjà, afficher le message d'erreur sans recharger la page
+        flash.now[:alert] = "Cet email est déjà utilisé. Veuillez vous connecter."
+        respond_to do |format|
+          format.html { render :new, status: :unprocessable_entity }
+          format.turbo_stream { render :new, status: :unprocessable_entity }
+        end
+        return
+      else
+        # Créer un nouvel utilisateur
+        user = User.new(user_params)
+        if user.save
+          sign_in(user) # Connecte l'utilisateur
+          @booking.user = user # Associe l'utilisateur à la réservation
+          Rails.logger.info "Utilisateur créé et connecté avec succès."
+        else
+          Rails.logger.error "Échec de la création de l'utilisateur : #{user.errors.full_messages}"
+          render_errors(user) and return
+        end
+      end
+
+    elsif params[:account_type] == "login"
+      # Connexion d'un utilisateur existant
+      user = User.find_by(email: user_params[:email])
+
+      if user && user.valid_password?(user_params[:password])
         sign_in(user) # Connecte l'utilisateur
         @booking.user = user # Associe l'utilisateur à la réservation
       else
-        Rails.logger.error "Échec de la connexion : utilisateur introuvable ou mot de passe incorrect."
-        flash[:alert] = "Email ou mot de passe incorrect."
+        flash.now[:alert] = "Email ou mot de passe incorrect."
         render :new, status: :unprocessable_entity and return
       end
     end
@@ -109,10 +115,10 @@ class BookingsController < ApplicationController
     if @booking.save
       redirect_to photobooth_package_booking_path(@photobooth, @package, @booking), notice: "Réservation créée avec succès."
     else
-      Rails.logger.error "Échec de la sauvegarde de la réservation : #{@booking.errors.full_messages}"
       render_errors(@booking)
     end
   end
+
 
 private
 
@@ -134,5 +140,12 @@ private
 
   def user_params
     params.require(:booking).require(:user).permit(:email, :password)
+  end
+
+  def check_admin
+    unless current_user&.admin?
+      flash[:alert] = "Vous n'avez pas l'autorisation d'accéder à cette page."
+      redirect_to root_path # ou vers une autre page si nécessaire
+    end
   end
 end
