@@ -1,0 +1,26 @@
+.gold {
+  color: #d4af37;
+}
+
+.light-gold {
+  color: #e6c67a;
+}
+
+.body {
+  background-color: #121212; /* Fond noir profond */
+  color: #d4af37; /* Texte doré */
+  font-family: 'Playfair Display', serif; /* Police élégante */
+  line-height: 1.5;
+  margin: 0;
+}
+
+.button {
+  background-color: #000000;
+  color: #d4af37;
+}
+
+.button:hover {
+background-color: #272626cc;
+color: #d4af37;
+text-decoration: none;
+}

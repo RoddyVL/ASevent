@@ -1,0 +1,20 @@
+.card {
+  // border: none;
+  border-radius: 10px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+  }
+
+.card-img-top {
+  width: 100%; /* Taille fixe */
+  // height: 150px; /* Taille fixe */
+  object-fit: cover;
+}
+
+.card-img-top:hover {
+  // transform: scale(1.1); /* Zoom à 110% */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Ajout d'une ombre portée */
+}
+}

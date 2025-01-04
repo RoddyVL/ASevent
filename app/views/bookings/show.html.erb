@@ -2,21 +2,23 @@
   <%# <div class='d-flex justify-content-center'>
     <h1>Finalisez votre reservation</h1>
   </div> %>
-  <div class="card card-show-booking shadow-lg p-5 mx-auto" style="max-width: 600px;">
+      <h1 class=" d-flex justify-content-center gold display-3"><%= @booking.package.photobooth.name %></h1>
+  <div class="card card-show-booking shadow-lg mx-auto" style="max-width: 360px;">
     <div class="card-body text-center">
-      <h1 class="card-title"><%= @booking.package.photobooth.name %></h1>
 
       <!-- Image du photobooth -->
       <div class="mb-4">
-        <%= image_tag(asset_path(@booking.package.photobooth.image_url), alt: "Photobooth Image", class: "img-fluid", style: "max-width: 300px;") %>
+        <%= image_tag(asset_path(@booking.package.photobooth.image_url), alt: "Photobooth Image", class: "card-img-top", style: "max-width: 364px;") %>
       </div>
 
-      <p><strong>Adresse :</strong> <%= @booking.address %></p>
-      <p><strong>Date de l'événement :</strong> <%= @booking.date.strftime('%d %B %Y') %></p>
-      <p><strong>Heure :</strong> <%= @booking.time.strftime('%H:%M') %></p>
+      <div class='text-start'>
+        <p><strong>Adresse :</strong> <%= @booking.address %></p>
+        <p><strong>Date de l'événement :</strong> <%= @booking.date.strftime('%d %B %Y') %></p>
+        <p><strong>Heure :</strong> <%= @booking.time.strftime('%H:%M') %></p>
 
-      <p><strong>Package :</strong> <%= @booking.package.hour %></p>
-      <p><strong>Prix :</strong> <%= humanized_money_with_symbol(@booking.package.price) %></p>
+        <p><strong>Package :</strong> <%= @booking.package.hour %></p>
+        <p><strong>Prix :</strong> <%= humanized_money_with_symbol(@booking.package.price) %></p>
+      </div>
 
       <!-- Formulaire de paiement Stripe -->
       <form action="/payments/create" method="post" class="d-flex justify-content-center mt-4">
