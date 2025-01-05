@@ -44,8 +44,8 @@ class BookingsController < ApplicationController
     # Si l'utilisateur a choisi de créer un compte
     if params[:booking] && params[:booking][:account_type] == "create"
       @user = User.new # Crée un nouvel utilisateur
+    # Si l'utilisateur est déjà connecté, on associe l'utilisateur à la réservation
     elsif current_user
-      # Si l'utilisateur est déjà connecté, on associe l'utilisateur à la réservation
       @user = current_user
     else
       # Si l'utilisateur n'est pas connecté et ne choisit pas de créer un compte
@@ -59,8 +59,6 @@ class BookingsController < ApplicationController
   end
 
   def create
-    AdminNotifierMailer.new_booking_notification(@booking).deliver_now
-
     booking_params = params[:booking]
 
     @booking = @package.bookings.new(
@@ -75,54 +73,49 @@ class BookingsController < ApplicationController
       )
     )
 
-    # Création ou connexion en fonction du choix de l'utilisateur
+    # cas ou il veut créer un compte
     if params[:account_type] == "create"
       user = User.find_by(email: user_params[:email])
 
       if user
-        # Si l'email existe déjà, afficher le message d'erreur sans recharger la page
         flash.now[:alert] = "Cet email est déjà utilisé. Veuillez vous connecter."
-        respond_to do |format|
-          format.html { render :new, status: :unprocessable_entity }
-          format.turbo_stream { render :new, status: :unprocessable_entity }
-        end
-        return
+        render :new, status: :unprocessable_entity and return
       else
-        # Créer un nouvel utilisateur
         user = User.new(user_params)
         if user.save
-          sign_in(user) # Connecte l'utilisateur
-          @booking.user = user # Associe l'utilisateur à la réservation
-          Rails.logger.info "Utilisateur créé et connecté avec succès."
+          sign_in(user)
+          @booking.user = user
         else
-          Rails.logger.error "Échec de la création de l'utilisateur : #{user.errors.full_messages}"
-          render_errors(user) and return
+          flash.now[:alert] = "Impossible de créer le compte : #{user.errors.full_messages.to_sentence}"
+          render :new, status: :unprocessable_entity and return
         end
       end
 
+    # cas où il se veut connecter
     elsif params[:account_type] == "login"
-      # Connexion d'un utilisateur existant
       user = User.find_by(email: user_params[:email])
 
-      if user && user.valid_password?(user_params[:password])
-        sign_in(user) # Connecte l'utilisateur
-        @booking.user = user # Associe l'utilisateur à la réservation
+      if user&.valid_password?(user_params[:password])
+        sign_in(user)
+        @booking.user = user
       else
         flash.now[:alert] = "Email ou mot de passe incorrect."
         render :new, status: :unprocessable_entity and return
       end
+
+    # cas où  il est déjà connecté
+    elsif user_signed_in?
+      @booking.user = current_user
     end
 
-    # Sauvegarde de la réservation
     if @booking.save
       AdminNotifierMailer.new_booking_notification(@booking).deliver_now
-
       redirect_to photobooth_package_booking_path(@photobooth, @package, @booking), notice: "Réservation créée avec succès."
     else
-      render_errors(@booking)
+      flash.now[:alert] = "Impossible de créer la réservation : #{@booking.errors.full_messages.to_sentence}"
+      render :new, status: :unprocessable_entity
     end
   end
-
 
 private
 

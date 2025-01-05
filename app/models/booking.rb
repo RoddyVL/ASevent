@@ -5,7 +5,7 @@ class Booking < ApplicationRecord
 
   enum status: { pending: 0, paid: 1, failed: 2 }
 
-  validates :address, presence: true
+  validates :address, :date, :time, :package, presence: true
   validates :date, presence: true
   validates :time, presence: true
   validates :package, :user, presence: true

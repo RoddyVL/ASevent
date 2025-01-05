@@ -34,7 +34,6 @@
 
             </p>
             <%= link_to "Choisir ce forfait", new_photobooth_package_booking_path(@photobooth, p),
-                        data: { turbo_frame: "new_booking" },
             class: "btn button" %>
 
           </div>
@@ -42,14 +41,6 @@
       </div>
     <% end %>
   </div>
-
-
-<div>
-  <h2>Réservation</h2>
-  <%= turbo_frame_tag "new_booking" do %>
-    <p>Sélectionnez un package pour réserver.</p>
-  <% end %>
-</div>
 
   <!-- Bouton de retour -->
   <div class="text-center mt-4">
