@@ -113,7 +113,7 @@ class BookingsController < ApplicationController
     end
 
     if @booking.save
-      AdminNotifierMailer.new_booking_notification(@booking).deliver_now
+      # AdminNotifierMailer.new_booking_notification(@booking).deliver_now
       redirect_to photobooth_package_booking_path(@photobooth, @package, @booking), notice: "Réservation créée avec succès."
     else
       flash.now[:alert] = "Impossible de créer la réservation : #{@booking.errors.full_messages.to_sentence}"
