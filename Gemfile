@@ -55,11 +55,13 @@ gem "sassc-rails"
 gem 'devise'
 gem 'money-rails'
 gem 'stripe'
+gem 'ostruct'
 
 
 
-group :development, :test do
-  gem "dotenv-rails", groups: [:development, :test]
+
+group :development, :test, :production do
+  gem "dotenv-rails", groups: [:development, :test, :production]
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
 end
