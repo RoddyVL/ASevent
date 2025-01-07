@@ -1,10 +1,14 @@
 class BookingsController < ApplicationController
   before_action :allow_guest_for_booking, only: [:new, :create]
   before_action :set_photobooth_and_package, except: :index
-  before_action :check_admin, only: [:index]
+  # before_action :check_admin, only: [:index]
 
   def index
-    @bookings = Booking.all
+    if current_user.admin
+      @bookings = Booking.all
+    else
+      @bookings = current_user.bookings
+    end
   end
 
   def show

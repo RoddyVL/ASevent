@@ -6,6 +6,7 @@
     <% @bookings.each do |b| %>
       <div class="col-md-4 mb-3">
         <div class="card">
+
           <div class="card-body">
             <h5 class="card-title">Réservation pour <%= b.package.hour %> - <%= b.package.price %>€</h5>
             <p class="card-text"><strong>Adresse :</strong> <%= b.address %></p>
@@ -13,6 +14,7 @@
             <p class="card-text"><strong>Heure :</strong> <%= b.time %></p>
             <p class="card-text"><strong>Forfait :</strong> <%= b.package.hour %> - <%= b.package.price %>€</p>
           </div>
+          
         </div>
       </div>
     <% end %>
