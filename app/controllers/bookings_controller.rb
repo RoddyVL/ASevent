@@ -63,7 +63,7 @@ class BookingsController < ApplicationController
   end
 
   def create
-    booking_params = params[:booking]
+    # booking_params = params[:booking]
 
     @booking = @package.bookings.new(
       address: booking_params[:address],
@@ -123,7 +123,11 @@ class BookingsController < ApplicationController
 
 private
 
-  def render_errors(record)
+def booking_params
+  params.require(:booking).permit(:address, :date, :time)
+end
+
+def render_errors(record)
     flash.now[:alert] = record.errors.full_messages.to_sentence
     render :new, status: :unprocessable_entity
   end

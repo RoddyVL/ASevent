@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_03_162639) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_09_104227) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -69,6 +69,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_03_162639) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "messages", force: :cascade do |t|
+    t.text "content"
+    t.bigint "user_id", null: false
+    t.bigint "booking_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["booking_id"], name: "index_messages_on_booking_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
+  end
+
   create_table "orders", force: :cascade do |t|
     t.string "state"
     t.string "booking_sku"
@@ -120,6 +130,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_03_162639) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bookings", "packages"
   add_foreign_key "bookings", "users"
+  add_foreign_key "messages", "bookings"
+  add_foreign_key "messages", "users"
   add_foreign_key "orders", "bookings"
   add_foreign_key "orders", "packages"
   add_foreign_key "orders", "users"

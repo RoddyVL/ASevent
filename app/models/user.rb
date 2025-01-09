@@ -7,6 +7,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   has_many :orders
   has_many :bookings
+  has_many :messages
 
   validates :email, presence: true, uniqueness: true
   validates :password, presence: true, length: { minimum: 6 }
