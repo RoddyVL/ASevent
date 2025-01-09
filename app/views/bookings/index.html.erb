@@ -3,20 +3,27 @@
 <div class="container mt-4">
   <h1 class="gold  text-center display-3 mb-3">Dashboard</h1>
   <div class="row">
-    <% @bookings.each do |b| %>
-      <div class="col-md-4 mb-3">
-        <div class="card">
 
-          <div class="card-body">
-            <h5 class="card-title">Réservation pour <%= b.package.hour %> - <%= b.package.price %>€</h5>
-            <p class="card-text"><strong>Adresse :</strong> <%= b.address %></p>
-            <p class="card-text"><strong>Date :</strong> <%= b.date %></p>
-            <p class="card-text"><strong>Heure :</strong> <%= b.time %></p>
-            <p class="card-text"><strong>Forfait :</strong> <%= b.package.hour %> - <%= b.package.price %>€</p>
+      <% if @bookings.any? %>
+        <% @bookings.each do |b| %>
+          <div class="col-md-4 mb-3">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Réservation pour <%= b.package.hour %> - <%= b.package.price %>€</h5>
+                <p class="card-text"><strong>Adresse :</strong> <%= b.address %></p>
+                <p class="card-text"><strong>Date :</strong> <%= b.date %></p>
+                <p class="card-text"><strong>Heure :</strong> <%= b.time %></p>
+                <p class="card-text"><strong>Forfait :</strong> <%= b.package.hour %> - <%= b.package.price %>€</p>
+              </div>
+
+
+            </div>
           </div>
-          
-        </div>
-      </div>
-    <% end %>
+        <% end %>
+
+      <% else %>
+        <h2 class="text-light d-fel text-center">Vous n'avez pas encore de réservation</h2>
+        <%= link_to "photobooth", root_path, class:"btn button mt-3" %>
+      <% end %>
   </div>
 </div>
