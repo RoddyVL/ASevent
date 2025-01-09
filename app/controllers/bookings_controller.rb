@@ -1,6 +1,6 @@
 class BookingsController < ApplicationController
-  before_action :allow_guest_for_booking, only: [:new, :create]
-  before_action :set_photobooth_and_package, except: :index
+  # before_action :allow_guest_for_booking, only: [:new, :create]
+  before_action :set_photobooth_and_package, except: %I[index show]
   # before_action :check_admin, only: [:index]
 
   def index
@@ -13,8 +13,12 @@ class BookingsController < ApplicationController
 
   def show
     @booking = Booking.find(params[:id])
+    @bookings = current_user.bookings
     @photobooth = @booking.package.photobooth
     @package = @booking.package
+    @message = Message.new
+    @messages = Message.all
+
 
     @stripe_publishable_key = ENV['STRIPE_PUBLISHABLE_KEY']
 
@@ -63,7 +67,6 @@ class BookingsController < ApplicationController
   end
 
   def create
-    # booking_params = params[:booking]
 
     @booking = @package.bookings.new(
       address: booking_params[:address],
@@ -114,7 +117,7 @@ class BookingsController < ApplicationController
 
     if @booking.save
       # AdminNotifierMailer.new_booking_notification(@booking).deliver_now
-      redirect_to photobooth_package_booking_path(@photobooth, @package, @booking), notice: "Réservation créée avec succès."
+      redirect_to booking_path(@booking), notice: "Réservation créée avec succès."
     else
       flash.now[:alert] = "Impossible de créer la réservation : #{@booking.errors.full_messages.to_sentence}"
       render :new, status: :unprocessable_entity

@@ -11,13 +11,14 @@ Rails.application.routes.draw do
   # root "posts#index"
   resources :photobooths, only: %i[show] do
     resources :packages, only: %i[index show] do
-      resources :bookings, only: %i[index show new create]
+      resources :bookings, only: %i[new create]
     end
   end
 
-  # resources :clients, only: [] do
-    resources :bookings, only: [:index]
-  # end
+  resources :bookings, only: %i[index show] do
+    resources :messages, only: :create
+  end
+
   resources :orders, only: [:show, :create] do
     resources :payments, only: :new
   end
