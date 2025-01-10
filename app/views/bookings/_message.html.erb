@@ -1,6 +1,6 @@
 <%# app/views/bookings/_message.html.erb %>
 
-<% @messages.each do |message| %>
+<% Message.all.each do |message| %>
   <div id="message-<%= message.id %>">
     <small>
       <strong><%= message.user.email %></strong>

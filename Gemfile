@@ -56,6 +56,7 @@ gem 'devise'
 gem 'money-rails'
 gem 'stripe'
 gem 'ostruct'
+gem "solid_cable"
 
 
 

@@ -45,9 +45,11 @@
         <div class="container col-md-6 justify-content-center chat mt-3">
           <h1>Your booking for <%= @booking.package.photobooth.name %></h1>
 
+          <%= turbo_stream_from "booking_#{@booking.id}_messages" %>
           <div id="messages" class="messages">
-
-          <%= render "message" %>
+            <% @booking.messages.each do |message| %>
+              <%= render "message", message: message %>
+          <% end %>
 
           </div>
 
