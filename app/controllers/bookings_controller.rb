@@ -17,6 +17,9 @@ class BookingsController < ApplicationController
     @photobooth = @booking.package.photobooth
     @package = @booking.package
     @message = Message.new
+
+    
+
     @messages = Message.all
 
 

@@ -1,15 +1,14 @@
 <%# app/views/bookings/_message.html.erb %>
-
-<% @messages.each do |message| %>
   <div id="message-<%= message.id %>"
   class="message <%= message.user === user ? 'sent' : 'received' %>"
   data-controller="message"
   data-chat-target="message-content"
   data-message-user-id-value="<%= message.user.id %>">
+
     <small>
       <strong><%= message.user.email %></strong>
       <i><%= message.created_at.strftime("%a %b %e at %l:%M %p") %></i>
     </small>
     <p class="message-content"><%= message.content %></p>
+    
   </div>
-<% end %>
