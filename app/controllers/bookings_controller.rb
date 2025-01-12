@@ -2,6 +2,8 @@ class BookingsController < ApplicationController
   # before_action :allow_guest_for_booking, only: [:new, :create]
   before_action :set_photobooth_and_package, except: %I[index show]
   # before_action :check_admin, only: [:index]
+  before_action :authorize_user, only: [:show]
+
 
   def index
     if current_user.admin
@@ -18,10 +20,14 @@ class BookingsController < ApplicationController
     @package = @booking.package
     @message = Message.new
 
-    
+    admin = User.find_by(id: 8)
 
-    @messages = Message.all
+    user_login = nil
 
+    unless current_user.admin
+      user_login = current_user
+      @messages = admin.messages + user_login.messages
+    end
 
     @stripe_publishable_key = ENV['STRIPE_PUBLISHABLE_KEY']
 
@@ -157,6 +163,13 @@ def render_errors(record)
     unless current_user&.admin?
       flash[:alert] = "Vous n'avez pas l'autorisation d'accéder à cette page."
       redirect_to root_path # ou vers une autre page si nécessaire
+    end
+  end
+
+  def authorize_user
+    @booking = Booking.find(params[:id])
+    unless current_user.admin? || current_user == @booking.user
+      redirect_to bookings_path
     end
   end
 end

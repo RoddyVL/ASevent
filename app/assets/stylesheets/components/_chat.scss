@@ -55,12 +55,13 @@
 
   .message.sent .message-content {
     align-self: flex-start;
-    background: $blue;
-    color: $light-gray;
+    background: #d4af37;
+    color: white;
   }
 
   .message.received .message-content {
     align-self: flex-end;
-    background: $gray-200;
+    background: black;
+    color: #d4af37;
   }
 }

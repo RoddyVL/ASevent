@@ -19,6 +19,8 @@ Rails.application.routes.draw do
     resources :messages, only: :create
   end
 
+  resources :messages, only: [:index]
+
   resources :orders, only: [:show, :create] do
     resources :payments, only: :new
   end

@@ -1,0 +1,10 @@
+<h1 class="text-light">Messages</h1>
+
+<% @messages.each do |message|%>
+  <div class="text-light">
+    <ul>
+      <li><%= message.package.photobooth.name %></li>
+      <li><%= message.date.strftime('%d %B %Y') %></li>
+    </ul>
+  </div>
+<% end %>
