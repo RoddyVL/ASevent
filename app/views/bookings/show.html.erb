@@ -47,7 +47,7 @@
 
           <%= turbo_stream_from "booking_#{@booking.id}_messages" %>
           <div id="messages" class="messages">
-            <% @booking.messages.each do |message| %>
+            <% @messages.each do |message| %>
               <%= render "messages/message", message: message, user: current_user %>
           <% end %>
 

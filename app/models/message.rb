@@ -1,6 +1,7 @@
 class Message < ApplicationRecord
   belongs_to :user
   belongs_to :booking
+  belongs_to :chat
 
   after_create_commit :broadcast_message
 

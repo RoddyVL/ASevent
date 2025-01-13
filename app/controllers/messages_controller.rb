@@ -1,14 +1,22 @@
 class MessagesController < ApplicationController
   def index
-    @messages = current_user.bookings
+    if current_user.admin
+      @bookings_messages = Booking.all
+    else
+      @bookings_messages = current_user.bookings
+    end
   end
 
   def create
     @booking = Booking.find(params[:booking_id])
-    @message = Message.new(message_params)
+    @message = @booking.chat.messages.new(message_params)
     @message.booking = @booking
     @message.user = current_user
     @messages = Message.all
+
+  # Recharger les données nécessaires pour la vue en cas d'erreur
+  @booking = @message.booking
+  @package = @booking.package
 
     if @message.save
       respond_to do |format|

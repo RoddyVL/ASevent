@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   end
 
   resources :bookings, only: %i[index show] do
-    resources :messages, only: :create
+    resources :messages, only: %i[create show]
   end
 
   resources :messages, only: [:index]
@@ -24,4 +24,6 @@ Rails.application.routes.draw do
   resources :orders, only: [:show, :create] do
     resources :payments, only: :new
   end
+
+  resources :chats, only: [:show]
 end

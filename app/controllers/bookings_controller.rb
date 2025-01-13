@@ -1,7 +1,6 @@
 class BookingsController < ApplicationController
   # before_action :allow_guest_for_booking, only: [:new, :create]
   before_action :set_photobooth_and_package, except: %I[index show]
-  # before_action :check_admin, only: [:index]
   before_action :authorize_user, only: [:show]
 
 
@@ -19,15 +18,10 @@ class BookingsController < ApplicationController
     @photobooth = @booking.package.photobooth
     @package = @booking.package
     @message = Message.new
+    chat = @booking.chat
 
-    admin = User.find_by(id: 8)
+    @messages = chat.messages
 
-    user_login = nil
-
-    unless current_user.admin
-      user_login = current_user
-      @messages = admin.messages + user_login.messages
-    end
 
     @stripe_publishable_key = ENV['STRIPE_PUBLISHABLE_KEY']
 
@@ -80,6 +74,10 @@ class BookingsController < ApplicationController
     @booking = @package.bookings.new(
       address: booking_params[:address],
       date: booking_params[:date],
+      city: booking_params[:city],
+      postal_code: booking_params[:postal_code],
+      phone_number: booking_params[:phone_number],
+
       time: DateTime.new(
         booking_params["time(1i)"].to_i,
         booking_params["time(2i)"].to_i,
@@ -127,6 +125,7 @@ class BookingsController < ApplicationController
     if @booking.save
       # AdminNotifierMailer.new_booking_notification(@booking).deliver_now
       redirect_to booking_path(@booking), notice: "Réservation créée avec succès."
+      @chat = Chat.create!(booking: @booking, user: current_user)
     else
       flash.now[:alert] = "Impossible de créer la réservation : #{@booking.errors.full_messages.to_sentence}"
       render :new, status: :unprocessable_entity
@@ -136,7 +135,7 @@ class BookingsController < ApplicationController
 private
 
 def booking_params
-  params.require(:booking).permit(:address, :date, :time)
+  params.require(:booking).permit(:address, :date, :time, :city, :postal_code,  :phone_number)
 end
 
 def render_errors(record)
@@ -159,12 +158,7 @@ def render_errors(record)
     params.require(:booking).require(:user).permit(:email, :password)
   end
 
-  def check_admin
-    unless current_user&.admin?
-      flash[:alert] = "Vous n'avez pas l'autorisation d'accéder à cette page."
-      redirect_to root_path # ou vers une autre page si nécessaire
-    end
-  end
+
 
   def authorize_user
     @booking = Booking.find(params[:id])

@@ -1,10 +1,13 @@
 <h1 class="text-light">Messages</h1>
 
-<% @messages.each do |message|%>
+<% @bookings_messages.each do |booking_messages|%>
   <div class="text-light">
     <ul>
-      <li><%= message.package.photobooth.name %></li>
-      <li><%= message.date.strftime('%d %B %Y') %></li>
+      <li><%= booking_messages.package.photobooth.name %></li>
+      <li><%= booking_messages.date.strftime('%d %B %Y') %></li>
+      <% if current_user.admin %>
+        <li><%= booking_messages.user.email %></li>
+      <% end %>
     </ul>
   </div>
 <% end %>

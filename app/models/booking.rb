@@ -2,7 +2,8 @@ class Booking < ApplicationRecord
   belongs_to :package
   belongs_to :user
   has_one :order
-  has_many :messages
+  has_one :chat
+  # after_create :create_associated_chat
 
   enum status: { pending: 0, paid: 1, failed: 2 }
 
@@ -11,5 +12,9 @@ class Booking < ApplicationRecord
   validates :time, presence: true
   validates :package, :user, presence: true
 
-  # validates :address, :date, :time, presence: true
+  # private
+
+  #  def create_associated_chat
+  #   @chat = Chat.create!(booking: @booking, user: current_user)
+  #  end
 end
