@@ -1,1 +1,27 @@
-<h1 class="text-light">Find me in chats/show </h1>
+</div>
+        <div class="container col-md-6 justify-content-center chat mt-3">
+          <h1>Your booking for <%= @booking.package.photobooth.name %></h1>
+
+          <%= turbo_stream_from "booking_#{@booking.id}_messages" %>
+          <div id="messages" class="messages">
+            <% @messages.each do |message| %>
+              <%= render "messages/message", message: message, user: current_user %>
+          <% end %>
+
+          </div>
+
+            <%= simple_form_for [@booking, @message],
+              html: {class: "d-flex",
+                    data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset"}} do |f|
+            %>
+              <% other_user = current_user == current_user.admin ? @booking.user  : User.find_by(id: 8)%>
+              <%= f.input :content,
+                label: false,
+                placeholder: "Message #{other_user.email}",
+                wrapper_html: {class: "flex-grow-1"}
+              %>
+                <%= f.submit "Envoyer", class: "btn button mb-3" %>
+            <% end %>
+
+        </div>
+  </div>

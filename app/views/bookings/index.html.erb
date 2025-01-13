@@ -18,7 +18,9 @@
                 <p class="card-text"><strong>Date :</strong> <%= b.date %></p>
                 <p class="card-text"><strong>Heure :</strong> <%= b.time %></p>
                 <p class="card-text"><strong>Forfait :</strong> <%= b.package.hour %> - <%= b.package.price %>€</p>
-                <%= link_to "chat", booking_path(b), class: "btn button mt-3"%>
+                <%= link_to "chat", chat_path(b.chat), class: "btn button mt-3"%>
+                <%= link_to "réservations", booking_path(b), class: "btn button mt-3"%>
+
               </div>
 
 

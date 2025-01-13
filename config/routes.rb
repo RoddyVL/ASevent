@@ -25,5 +25,5 @@ Rails.application.routes.draw do
     resources :payments, only: :new
   end
 
-  resources :chats, only: [:show]
+  resources :chats, only: [:show, :index]
 end

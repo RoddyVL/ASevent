@@ -1,13 +1,15 @@
+<%# app/views/messages/index.html.erb %>
 <h1 class="text-light">Messages</h1>
 
-<% @bookings_messages.each do |booking_messages|%>
+<% @bookings.each do |booking|%>
   <div class="text-light">
     <ul>
-      <li><%= booking_messages.package.photobooth.name %></li>
-      <li><%= booking_messages.date.strftime('%d %B %Y') %></li>
+      <li><%= booking.package.photobooth.name %></li>
+      <li><%= booking.date.strftime('%d %B %Y') %></li>
       <% if current_user.admin %>
-        <li><%= booking_messages.user.email %></li>
+        <li><%= booking.user.email %></li>
       <% end %>
+      <li><%= link_to "chat", chat_path(booking.chat) %></li>
     </ul>
   </div>
 <% end %>

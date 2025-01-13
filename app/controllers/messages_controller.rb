@@ -1,9 +1,9 @@
 class MessagesController < ApplicationController
   def index
     if current_user.admin
-      @bookings_messages = Booking.all
+      @bookings = Booking.all
     else
-      @bookings_messages = current_user.bookings
+      @bookings = current_user.bookings
     end
   end
 
