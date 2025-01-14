@@ -11,7 +11,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body style="background-color: #121212;">
+  <body style="background-color: #121212;" data-current-user-id="<%= current_user ? current_user.id : "" %>">
   <%= render 'layouts/navbar' %>
     <%= yield %>
   </body>

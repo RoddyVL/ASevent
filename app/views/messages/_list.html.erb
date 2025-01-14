@@ -1,0 +1,13 @@
+<%# app/views/chats/_list.html.erb %>
+<div class="list-group" data-controller="chats-list">
+  <% @bookings.each do |booking|%>
+      <%= link_to "#{booking.package.photobooth.name} - #{booking.package.hour} - #{humanized_money_with_symbol(booking.package.price)}", chat_path(booking.chat),
+      class: "#{'active' if booking.chat == selected_chat} list-group-item list-group-item-action",
+      data: {
+        turbo_frame: :chat_details,
+        turbo_action: :advance,
+        action: "click->chats-list#highlight",
+        chats_list_target: "chat"
+        } %>
+  <% end %>
+</div>

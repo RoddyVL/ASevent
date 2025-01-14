@@ -1,44 +1,42 @@
 <div class="container mt-5">
-  <%# <div class='d-flex justify-content-center'>
-    <h1>Finalisez votre reservation</h1>
-  </div> %>
+
   <div data-controller="typing-effect">
     <h1  data-typing-effect-target="text" class=" d-flex justify-content-center gold display-3"><%= @booking.package.photobooth.name %></h1>
   </div>
-  
-  <div class="card card-show-booking shadow-lg mx-auto" style="max-width: 360px;">
-    <div class="card-body text-center">
 
-      <!-- Image du photobooth -->
-      <div class="mb-4">
-        <%= image_tag(asset_path(@booking.package.photobooth.image_url), alt: "Photobooth Image", class: "card-img-top", style: "max-width: 364px;") %>
+  <div class="d-flex">
+    <div class="card card-show-booking shadow-lg mx-auto col-md-6" style="max-width: 360px;">
+      <div class="card-body text-center">
+
+        <!-- Image du photobooth -->
+        <div class="mb-4">
+          <%= image_tag(asset_path(@booking.package.photobooth.image_url), alt: "Photobooth Image", class: "card-img-top", style: "max-width: 364px;") %>
+        </div>
+
+        <div class='text-start'>
+          <p><strong>Adresse :</strong> <%= @booking.address %></p>
+          <p><strong>Date de l'événement :</strong> <%= @booking.date.strftime('%d %B %Y') %></p>
+          <p><strong>Heure :</strong> <%= @booking.time.strftime('%H:%M') %></p>
+
+          <p><strong>Package :</strong> <%= @booking.package.hour %></p>
+          <p><strong>Prix :</strong> <%= humanized_money_with_symbol(@booking.package.price) %></p>
+        </div>
+
+        <!-- Formulaire de paiement Stripe -->
+        <form action="/payments/create" method="post" class="d-flex mt-4">
+          <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+          <input type="hidden" name="package_id" value="<%= @package.id %>">
+
+          <script
+            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="<%= @stripe_publishable_key %>"
+            data-amount="<%= (@package.price * 100).to_i %>"
+            data-name="Réservation Photobooth"
+            data-description="<%= @package.photobooth.name %>"
+            data-currency="eur"
+            data-locale="auto"
+            data-label="Payer maintenant">
+          </script>
+        </form>
       </div>
-
-      <div class='text-start'>
-        <p><strong>Adresse :</strong> <%= @booking.address %></p>
-        <p><strong>Date de l'événement :</strong> <%= @booking.date.strftime('%d %B %Y') %></p>
-        <p><strong>Heure :</strong> <%= @booking.time.strftime('%H:%M') %></p>
-
-        <p><strong>Package :</strong> <%= @booking.package.hour %></p>
-        <p><strong>Prix :</strong> <%= humanized_money_with_symbol(@booking.package.price) %></p>
-      </div>
-
-      <!-- Formulaire de paiement Stripe -->
-      <form action="/payments/create" method="post" class="d-flex justify-content-center mt-4">
-        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-        <input type="hidden" name="package_id" value="<%= @package.id %>">
-
-        <script
-          src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-          data-key="<%= @stripe_publishable_key %>"
-          data-amount="<%= (@package.price * 100).to_i %>"
-          data-name="Réservation Photobooth"
-          data-description="<%= @package.photobooth.name %>"
-          data-currency="eur"
-          data-locale="auto"
-          data-label="Payer maintenant">
-        </script>
-      </form>
-    </div>
-  </div>
 </div>

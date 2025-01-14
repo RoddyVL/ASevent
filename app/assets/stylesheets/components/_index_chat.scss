@@ -1,0 +1,29 @@
+.chats-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  height: 100vh;
+
+  > * {
+    overflow-y: auto;
+  }
+
+  /* Première colonne (gauche) */
+  > :first-child {
+    border-right: 1px solid #ccc;
+  }
+
+  /* Deuxième colonne (droite) */
+  > :last-child {
+
+  }
+}
+
+/* Optionnel: Styles pour des éléments spécifiques, selon leur rôle dans les vues */
+.list-group-item {
+  padding: 10px;
+}
+
+.chat {
+  /* Exemple d'ajout de padding pour la vue de chat */
+  padding: 1.5em;
+}
