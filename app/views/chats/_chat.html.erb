@@ -20,7 +20,7 @@
         <% if current_user.admin %>
           <% other_user = @booking.user %>
           <% else %>
-          <% other_user = User.find_by(id: 8) %>
+          <% other_user = User.find_by(admin: true) %>
         <% end %>
         <%= f.input :content,
           label: false,
