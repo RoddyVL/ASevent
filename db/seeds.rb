@@ -1,4 +1,6 @@
 # Suppression des anciennes données dans le bon ordre
+Message.destroy_all
+Chat.destroy_all
 Booking.destroy_all
 Package.destroy_all
 Photobooth.destroy_all
@@ -27,8 +29,8 @@ photobooth3 = Photobooth.create!(
 
 # Packages pour photobooth
 packages_photobooth = [
-  { hour: "2h", price: 250 },
-  { hour: "3h", price: 180 },
+  { hour: "2h", price: 180 },
+  { hour: "3h", price: 250 },
   { hour: "5h", price: 400 }
 ]
 

@@ -30,7 +30,9 @@
 
       <% else %>
         <h2 class="text-light d-fel text-center">Vous n'avez pas encore de réservation</h2>
-        <%= link_to "photobooth", root_path, class:"btn button mt-3" %>
+        <% unless current_user.admin %>
+          <%= link_to "photobooth", root_path, class:"btn button mt-3" %>
+        <% end %>
       <% end %>
   </div>
 </div>
