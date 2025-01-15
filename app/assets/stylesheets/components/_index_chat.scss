@@ -1,7 +1,7 @@
 .chats-grid {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  height: 100vh;
+  height: 90vh;
 
   > * {
     overflow-y: auto;
@@ -10,12 +10,12 @@
   /* Première colonne (gauche) */
   > :first-child {
     border-right: 1px solid #ccc;
+    height: 90vh;
   }
 
   /* Deuxième colonne (droite) */
-  > :last-child {
-
-  }
+  // > :last-child {
+  // }
 }
 
 /* Optionnel: Styles pour des éléments spécifiques, selon leur rôle dans les vues */
