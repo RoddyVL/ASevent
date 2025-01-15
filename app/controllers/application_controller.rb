@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :set_stripe_key
+  @is_mobile = browser.device.mobile?
 
   private
 
