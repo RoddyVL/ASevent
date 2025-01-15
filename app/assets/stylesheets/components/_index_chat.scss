@@ -1,3 +1,4 @@
+// app/assets/stylesheets/components/_index_chat.scss
 .chats-grid {
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -12,10 +13,6 @@
     border-right: 1px solid #ccc;
     height: 90vh;
   }
-
-  /* Deuxième colonne (droite) */
-  // > :last-child {
-  // }
 }
 
 /* Optionnel: Styles pour des éléments spécifiques, selon leur rôle dans les vues */

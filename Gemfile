@@ -57,8 +57,7 @@ gem 'money-rails'
 gem 'stripe'
 gem 'ostruct'
 gem "solid_cable"
-
-
+gem 'browser'
 
 
 group :development, :test, :production do

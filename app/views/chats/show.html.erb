@@ -1,5 +1,14 @@
 <%# app/views/chats/show.html.erb %>
-<div class="chats-grid">
-  <%= render 'messages/list', selected_chat: @chat%>
-  <%= render 'chat' %>
-</div>
+<% if @is_mobile %>
+  <div>
+    <%= render 'chat' %>
+  </div>
+  <div class="text-center mt-4">
+    <%= link_to "Retour", bookings_path, class: "btn btn-outline-light mb-3" %>
+  </div>
+<% else %>
+  <div class="chats-grid">
+    <%= render 'messages/list', selected_chat: @chat %>
+    <%= render 'chat' %>
+  </div>
+<% end %>

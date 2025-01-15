@@ -1,6 +1,7 @@
 class ChatsController < ApplicationController
   def show
     @chat = Chat.find_by(id: params[:id])
+    @is_mobile = browser.device.mobile?
     @booking = @chat.booking
     @photobooth = @booking.package.photobooth
     @package = @booking.package
