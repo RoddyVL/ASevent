@@ -12,9 +12,32 @@ Booking show
       <div class="card-body text-center">
 
         <!-- Image du photobooth -->
-        <div class="mb-4">
-          <%= image_tag(asset_path(@booking.package.photobooth.image_url), alt: "Photobooth Image", class: "card-img-top", style: "max-width: 364px;") %>
-        </div>
+     <div class="mb-4">
+  <% if @booking.package.photobooth.photos.any? %>
+    <div id="carousel-<%= @booking.id %>" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <% @booking.package.photobooth.photos.each_with_index do |photo, index| %>
+          <div class="carousel-item <%= 'active' if index == 0 %>">
+            <%= image_tag(asset_path(photo.image_url), class: "d-block w-100", alt: "Photobooth Image", style: "max-width: 364px;") %>
+          </div>
+        <% end %>
+      </div>
+
+      <%# Boutons de navigation %>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carousel-<%= @booking.id %>" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carousel-<%= @booking.id %>" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  <% else %>
+    <%= image_tag(asset_path(@booking.package.photobooth.photos.first.image_url), alt: "Photobooth Image", class: "card-img-top", style: "max-width: 364px;") %>
+  <% end %>
+</div>
+
 
         <div class='text-start'>
           <p><strong>Adresse :</strong> <%= @booking.address %></p>

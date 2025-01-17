@@ -7,7 +7,27 @@
 
   <!-- Section des détails du Photobooth -->
   <div class="card mb-4 shadow-sm custom-card text-align-center">
-    <%= image_tag(asset_path(@photobooth.image_url), class: "card-img-top", alt: @photobooth.name) %>
+    <%# Carrousel Bootstrap pour les photos %>
+    <div id="carousel-<%= @photobooth.id %>" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <% @photobooth.photos.each_with_index do |photo, index| %>
+          <div class="carousel-item <%= 'active' if index == 0 %>">
+            <%= image_tag(asset_path(photo.image_url), class: "d-block w-100", alt: @photobooth.name) %>
+          </div>
+        <% end %>
+      </div>
+
+      <%# Boutons de navigation %>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carousel-<%= @photobooth.id %>" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carousel-<%= @photobooth.id %>" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
     <div class="card-body">
       <h2 class="card-text"><%= @photobooth.description %></h2>
 
@@ -35,7 +55,6 @@
             </p>
             <%= link_to "Choisir ce forfait", new_photobooth_package_booking_path(@photobooth, p),
             class: "btn button" %>
-
           </div>
         </div>
       </div>

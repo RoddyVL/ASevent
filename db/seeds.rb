@@ -3,29 +3,46 @@ Message.destroy_all
 Chat.destroy_all
 Booking.destroy_all
 Package.destroy_all
+Photo.destroy_all
 Photobooth.destroy_all
 
 # Création des photobooths
 photobooth1 = Photobooth.create!(
   name: "Photobooth",
   description: "Photobooth – Capturez l'instant avec style et simplicité ! Ajoutez une touche de fun...",
-  image_url: "photobooth.jpg",
   review: "4 stars"
 )
 
 photobooth2 = Photobooth.create!(
   name: "360booth",
   description: "Photobooth 360 : L’expérience immersive ultime !",
-  image_url: "p360.jpg",
   review: "4 stars"
 )
 
 photobooth3 = Photobooth.create!(
   name: "Miroir",
   description: "Miroir Photobooth – Une expérience interactive inédite pour vos événements...",
-  image_url: "miroir.jpg",
   review: "4 stars"
 )
+
+# Ajout des photos associées
+photobooth1.photos.create!([
+  { image_url: "photobooth1.jpg" },
+  { image_url: "photobooth2.jpg" },
+  { image_url: "photobooth3.jpg" }
+])
+
+photobooth2.photos.create!([
+  { image_url: "p360_1.jpg" },
+  { image_url: "p360_2.jpg" },
+  { image_url: "p360_3.jpg" }
+])
+
+photobooth3.photos.create!([
+  { image_url: "miroir1.jpg" },
+  { image_url: "miroir2.jpg" },
+  { image_url: "miroir3.jpg" }
+])
 
 # Packages pour photobooth
 packages_photobooth = [
@@ -60,6 +77,7 @@ packages_miroir.each do |pkg|
   photobooth3.packages.create!(pkg)
 end
 
+# Création de l'utilisateur admin
 admin_user = User.create!(
   email: 'admin@example.com',
   password: '123456',  # Remplacez par un mot de passe sécurisé
