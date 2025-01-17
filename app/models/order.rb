@@ -4,5 +4,5 @@ class Order < ApplicationRecord
   belongs_to :booking
 
   monetize :amount_cents
-  enum state: { pending: 0, paid: 1 }
+  enum state: { waiting: 0, paid: 1 }
 end
