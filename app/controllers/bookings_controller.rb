@@ -18,10 +18,8 @@ class BookingsController < ApplicationController
     @photobooth = @booking.package.photobooth
     @package = @booking.package
     @message = Message.new
-    @messages = Message.all
     chat = @booking.chat
-
-
+    @messages = chat.messages
 
     @stripe_publishable_key = ENV['STRIPE_PUBLISHABLE_KEY']
 
