@@ -5,12 +5,25 @@ class OrdersController < ApplicationController
 
   def index
     @bookings = current_user.bookings.where(paiement_status: 0)
-    @packages = []
     @packages = @bookings.map { |booking| booking.package }
     @total_price = (@packages.map { |package| package.price_cents }).sum
-    @package = Package.first
-    @package.update(price_cents: @total_price)
 
+    # Créer un package temporaire pour stocker le prix total
+    temporary_photobooth = Photobooth.create!(
+      name: "Photobooth temporaire",
+      description: "Photobooth temporaire pour calcul du total des réservations",
+      image_url: "default.jpg",  # Image par défaut
+      review: "N/A"
+    )
+
+    @total_package = Package.create!(
+      price_cents: @total_price,  # Le prix total des réservations
+      photobooth_id: temporary_photobooth.id,  # Associer le package avec le photobooth temporaire
+      hour: "Total des réservations"  # Attribuer une valeur à 'hour' pour éviter l'erreur
+    )
+
+    # Récupérer le package total créé pour l'afficher dans la vue
+    @package = @total_package
 
     @stripe_publishable_key = ENV['STRIPE_PUBLISHABLE_KEY']
 

@@ -44,6 +44,7 @@ photobooth3.photos.create!([
   { image_url: "miroir3.jpg" }
 ])
 
+
 # Packages pour photobooth
 packages_photobooth = [
   { hour: "2h", price: 180 },

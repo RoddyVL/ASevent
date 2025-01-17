@@ -3,6 +3,6 @@ class Package < ApplicationRecord
     has_many :bookings, dependent: :destroy
 
     validates :hour, presence: true
-    validates :price, presence: true, numericality: { greater_than: 0 }
+    validates :price, presence: true
     monetize :price_cents
 end

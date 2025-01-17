@@ -1,7 +1,7 @@
 class PhotoboothsController < ApplicationController
   before_action :authenticate_user!, only: %i[create]
   def index
-    @photobooths = Photobooth.all
+    @photobooths = Photobooth.where.not(name: "Photobooth temporaire")
   end
 
 
