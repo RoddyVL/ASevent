@@ -21,7 +21,7 @@ Rails.application.routes.draw do
 
   resources :messages, only: [:index]
 
-  resources :orders, only: [:show, :create] do
+  resources :orders, only: [:show, :create, :index] do
     resources :payments, only: :new
   end
 

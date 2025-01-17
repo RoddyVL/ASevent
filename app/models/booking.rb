@@ -5,7 +5,7 @@ class Booking < ApplicationRecord
   has_one :chat
   # after_create :create_associated_chat
 
-  enum status: { pending: 0, paid: 1, failed: 2 }
+  enum booking_status: { pending: 0, paid: 1, failed: 2 }
 
   validates :address, :date, :time, :package, presence: true
   validates :date, presence: true

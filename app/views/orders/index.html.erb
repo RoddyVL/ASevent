@@ -1,0 +1,55 @@
+<div class="container mt-4">
+
+  <div data-controller="typing-effect">
+    <h1 data-typing-effect-target="text" class="gold  text-center display-3 mb-3">Panier</h1>
+  </div>
+
+  <div class="row">
+
+      <% if @bookings.any? %>
+        <% @bookings.each do |b| %>
+          <div class="col-md-4 mb-3">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Réservation pour <%= b.package.hour %> - <%= b.package.price %>€</h5>
+                <p class="card-text"><strong>Adresse :</strong> <%= b.address %></p>
+                <p class="card-text"><strong>Date :</strong> <%= b.date %></p>
+                <p class="card-text"><strong>Heure :</strong> <%= b.time %></p>
+                <p class="card-text"><strong>Forfait :</strong> <%= b.package.hour %> - <%= b.package.price %>€</p>
+                <%= link_to "chat", chat_path(b.chat), class: "btn button mt-3"%>
+                <%= link_to "réservations", booking_path(b), class: "btn button mt-3"%>
+
+              </div>
+
+
+            </div>
+          </div>
+        <% end %>
+
+      <% else %>
+        <h2 class="text-light d-fel text-center">Vous n'avez pas encore de réservation</h2>
+        <% unless current_user.admin %>
+          <%= link_to "photobooth", root_path, class:"btn button mt-3" %>
+        <% end %>
+      <% end %>
+
+      <!-- Formulaire de paiement Stripe -->
+        <form action="/payments/create" method="post" class="d-flex mt-4">
+          <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+          <input type="hidden" name="package_id" value="<%= @package.id %>">
+
+          <script
+            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="<%= @stripe_publishable_key %>"
+            data-amount="<%= (@package.price * 100).to_i %>"
+            data-name="Réservation Photobooth"
+            data-description="<%= @package.photobooth.name %>"
+            data-currency="eur"
+            data-locale="auto"
+            data-label="Payer maintenant">
+          </script>
+        </form>
+      </div>
+
+  </div>
+</div>
