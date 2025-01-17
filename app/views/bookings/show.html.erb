@@ -1,3 +1,6 @@
+Booking show
+
+<%# app/views/bookings/show.html.erb %>
 <div class="container mt-5">
 
   <div data-controller="typing-effect">
@@ -39,4 +42,26 @@
           </script>
         </form>
       </div>
+</div>
+
+    <!-- Bouton de chat -->
+    <div data-controller="chats-list" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+      <button
+      id="open-chat"
+      style="border: none; background: none; cursor: pointer;"
+      data-action="click->chats-list#toggleChat">
+      <img src="<%= asset_path('chat-icon.png') %>" alt="Chat" style="width: 50px; height: 50px;">
+      </button>
+
+      <!-- Conteneur pour le chat -->
+      <div
+          class="chat-icon d-none"
+          style="width: 300px; height:500px ; overflow-y: auto;"
+          data-chats-list-target="chatContainer">
+          <%= render partial: 'chats/chat' %>
+      </div>
+
+    </div>
+
+  </div>
 </div>
