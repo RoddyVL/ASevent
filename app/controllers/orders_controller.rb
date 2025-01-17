@@ -8,7 +8,7 @@ class OrdersController < ApplicationController
     @packages = []
     @packages = @bookings.map { |booking| booking.package }
     @total_price = (@packages.map { |package| package.price_cents }).sum
-    @package = Package.last
+    @package = Package.first
     @package.update(price_cents: @total_price)
 
 

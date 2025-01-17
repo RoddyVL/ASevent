@@ -58,7 +58,7 @@ Booking show
           class="chat-icon d-none"
           style="width: 300px; height:500px ; overflow-y: auto;"
           data-chats-list-target="chatContainer">
-          <%= render partial: 'chats/chat' %>
+          <%= render partial: 'chats/chat', locals: { show_booking: controller.action_name == 'show' } %>
       </div>
 
     </div>

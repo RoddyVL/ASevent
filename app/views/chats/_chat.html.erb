@@ -1,8 +1,22 @@
 <%# app/views/chats/_chat.html.erb %>
 <%= turbo_frame_tag :chat_details do %>
 
+    <%# <% show_booking ||= false %>
+
+    <%# <% if show_booking %>
+      <%# <div class="close-icon d-flex justify-content-end"> %>
+        <%# <%= link_to image_tag('fermer.png', alt: 'Fermer', class: 'close-icon', style: "width: 22px;position: absolute;top: 29px;"), '#', class: 'close-chat-btn' %>
+      <%# </div> %>
+    <%# <% end %>
+
   <div class="chat">
-    <h1>Votre réservation pour <%= @booking.package.photobooth.name %></h1>
+
+
+    <% show_booking ||= false %>
+
+    <% if show_booking == false %>
+      <h1>Votre réservation pour <%= @booking.package.photobooth.name %></h1>
+    <% end %>
 
     <%= turbo_stream_from "booking_#{@booking.id}_messages" %>
     <div id="messages" class="messages">
