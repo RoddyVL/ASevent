@@ -1,26 +1,40 @@
 <%# app/views/photobooths/index.html.erb %>
-<%# app/views/photobooths/index.html.erb %>
 <div class="container mt-5">
   <div class="text-center mb-5">
-
     <div data-controller="typing-effect">
       <h1 data-typing-effect-target="text" class="display-4 gold">Location de Photobooths</h1>
       <h3 class="text-light">Découvrez nos photobooths disponibles près de chez vous</h3>
     </div>
-
   </div>
 
   <div class="row g-4">
     <% @photobooths.each do |p| %>
       <div class="col-md-4">
         <div class="card h-100 shadow-sm">
-          <%# Image du photobooth %>
-          <%= image_tag(asset_path(p.image_url), class: "card-img-top", alt: p.name) %>
+          <%# Carrousel pour afficher les photos du photobooth %>
+          <div id="carousel-<%= p.id %>" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <% p.photos.each_with_index do |photo, index| %>
+                <div class="carousel-item <%= 'active' if index == 0 %>">
+                  <%= image_tag(asset_path(photo.image_url), class: "d-block w-100", alt: p.name) %>
+                </div>
+              <% end %>
+            </div>
+
+            <%# Boutons de navigation du carrousel %>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carousel-<%= p.id %>" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carousel-<%= p.id %>" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
 
           <%# Contenu du photobooth %>
           <div class="card-body text-center">
             <h5 class="card-title fw-bold gold"><%= p.name %></h5>
-
             <%= link_to "En savoir plus", photobooth_path(p), class: "btn button mt-3" %>
           </div>
         </div>
