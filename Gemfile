@@ -58,6 +58,10 @@ gem 'stripe'
 gem 'ostruct'
 gem "solid_cable"
 gem 'browser'
+gem "ruby-openai"
+gem "solid_queue"
+
+
 
 
 group :development, :test, :production do
