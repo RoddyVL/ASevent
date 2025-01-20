@@ -1,6 +1,6 @@
 <%# app/views/chats/_list.html.erb %>
 <div class="list-group" data-controller="chats-list">
-  <% @bookings.each do |booking|%>
+  <% @bookings.reverse.each do |booking|%>
       <%= link_to "#{booking.package.photobooth.name} - #{booking.package.hour} - #{humanized_money_with_symbol(booking.package.price)}", chat_path(booking.chat),
       class: "#{'active' if booking.chat == selected_chat} list-group-item list-group-item-action",
       data: {
