@@ -60,6 +60,7 @@ gem "solid_cable"
 gem 'browser'
 gem "ruby-openai"
 gem "solid_queue"
+gem 'neighbor'
 
 
 

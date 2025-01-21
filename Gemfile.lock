@@ -202,6 +202,8 @@ GEM
     msgpack (1.7.5)
     multipart-post (2.4.1)
     mutex_m (0.3.0)
+    neighbor (0.5.2)
+      activerecord (>= 7)
     net-http (0.6.0)
       uri
     net-imap (0.5.1)
@@ -377,6 +379,7 @@ DEPENDENCIES
   importmap-rails
   letter_opener
   money-rails
+  neighbor
   ostruct
   pg (~> 1.1)
   puma (>= 5.0)
