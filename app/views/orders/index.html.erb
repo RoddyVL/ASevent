@@ -24,32 +24,47 @@
       </div>
 
   <div class="row">
-
-      <% if @bookings.any? %>
-        <% @bookings.each do |b| %>
-          <div class="col-md-4 mb-3">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title"><%= b.package.photobooth.name %> - <%= b.package.hour %> - <%= b.package.price %>€</h5>
-                <p class="card-text"><strong>Adresse :</strong> <%= b.address %></p>
-                <p class="card-text"><strong>Date :</strong> <%= b.date %></p>
-                <p class="card-text"><strong>Heure :</strong> <%= b.time %></p>
-                <p class="card-text"><strong>Forfait :</strong> <%= b.package.hour %> - <%= b.package.price %>€</p>
-                <p class="card-text"><strong>Payment:</strong> <%= payment_status_label(b.paiement_status) %></p>
-                <% if b.paiement_status == "Paid" %>
-                  <p class="card-text"><strong>Status:</strong> <%= booking_status_label(b.booking_status) %></p>
-                <% end %>
-
-                <%# <%= link_to "chat", chat_path(b.chat), class: "btn button mt-3"%>
-                <%# <%= link_to "réservations", booking_path(b), class: "btn button mt-3"%>
-
+<% if @bookings.any? %>
+  <% @bookings.reverse.each do |b| %>
+    <div class="col-md-4 mb-3">
+      <div class="card">
+        <div id="carouselBooking<%= b.id %>" class="carousel slide" data-bs-ride="carousel">
+          <!-- Images du photobooth -->
+          <div class="carousel-inner">
+            <% b.package.photobooth.photos.each_with_index do |photo, index| %>
+              <div class="carousel-item <%= 'active' if index == 0 %>">
+                <%= image_tag(asset_path(photo.image_url), class: "d-block w-100", alt: "Image #{index + 1}") %>
               </div>
-
-
-            </div>
+            <% end %>
           </div>
-        <% end %>
-      <% end %>
+
+          <!-- Contrôles du carousel -->
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselBooking<%= b.id %>" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Précédent</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselBooking<%= b.id %>" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Suivant</span>
+          </button>
+        </div>
+
+        <div class="card-body">
+          <h5 class="card-title"><%= b.package.photobooth.name %> - <%= b.package.hour %> - <%= b.package.price %>€</h5>
+          <p class="card-text"><strong>Adresse :</strong> <%= b.address %></p>
+          <p class="card-text"><strong>Date :</strong> <%= b.date %></p>
+          <p class="card-text"><strong>Heure :</strong> <%= b.time %></p>
+          <p class="card-text"><strong>Forfait :</strong> <%= b.package.hour %> - <%= b.package.price %>€</p>
+          <p class="card-text"><strong>Payment:</strong> <%= payment_status_label(b.paiement_status) %></p>
+          <% if b.paiement_status == "Paid" %>
+            <p class="card-text"><strong>Status:</strong> <%= booking_status_label(b.booking_status) %></p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
 
 
       </div>

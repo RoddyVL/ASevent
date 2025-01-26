@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_many :bookings
   has_many :chats
   has_many :messages, through: :chats
-
+  has_many :questions
 
   validates :email, presence: true, uniqueness: true
   validates :password, presence: true, length: { minimum: 6 }
