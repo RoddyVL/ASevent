@@ -79,11 +79,11 @@ packages_miroir.each do |pkg|
 end
 
 # Création de l'utilisateur admin
-admin_user = User.create!(
-  email: 'admin@example.com',
-  password: '123456',  # Remplacez par un mot de passe sécurisé
-  password_confirmation: '123456', # Assurez-vous que la confirmation du mot de passe est correcte
-  admin: true
-)
+# admin_user = User.create!(
+#   email: 'admin@example.com',
+#   password: '123456',  # Remplacez par un mot de passe sécurisé
+#   password_confirmation: '123456', # Assurez-vous que la confirmation du mot de passe est correcte
+#   admin: true
+# )
 
-puts "Admin user created with email: #{admin_user.email}"
+# puts "Admin user created with email: #{admin_user.email}"
