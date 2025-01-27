@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_27_132135) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_27_171348) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "vector"
@@ -113,6 +113,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_27_132135) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "price_cents", default: 0, null: false
+    t.vector "embedding", limit: 1536
     t.index ["photobooth_id"], name: "index_packages_on_photobooth_id"
   end
 

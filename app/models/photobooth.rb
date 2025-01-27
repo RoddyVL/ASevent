@@ -20,5 +20,8 @@ class Photobooth < ApplicationRecord
     )
     embedding = response['data'][0]['embedding']
     update(embedding: embedding)
+
+    # Set embeddings for packages
+    packages.each(&:set_embedding)
   end
 end

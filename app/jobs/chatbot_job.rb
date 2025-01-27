@@ -29,11 +29,15 @@ class ChatbotJob < ApplicationJob
     results = []
     system_text = "You are an assistant for a photobooth location website. 1.Always say the name of the photobooth 2.
     If you don't know the answer, you can say 'I don't know' 3. If you don't have any photobooth at the end of the
-    message you can say, we don't have that. Here are the photobooths you should use to answer the user questions: "
-    nearest_products = get_nearest_products
-    nearest_products.each do |product|
-      system_text += "** PRODUCT #{product.id}: name: #{product.name}, description: #{product.description}**"
+    message you can say, we don't have that. Here are the photobooths and their packages you should use to answer the user questions: "
+    nearest_photobooths = get_nearest_photobooths
+    nearest_photobooths.each do |photobooth|
+      system_text += "** Photobooth: #{photobooth.id}: name: #{photobooth.name}, description: #{photobooth.description}**"
+      photobooth.packages.each do |package|
+        system_text += "** Package: #{package.id}: hour: #{package.hour}: price: #{package.price}**"
+      end
     end
+    
     results << { role: "system", content: system_text }
     questions.each do |question|
       results << { role: "user", content: question.user_question }
@@ -42,7 +46,7 @@ class ChatbotJob < ApplicationJob
     return results
   end
 
-  def get_nearest_products
+  def get_nearest_photobooths
     # 1 convert the user question into embedding
     response = client.embeddings(
       parameters: {
@@ -53,6 +57,9 @@ class ChatbotJob < ApplicationJob
     question_embedding = response['data'][0]['embedding']
 
     # 2. Find the nearest neighbors to that vector
-    Photobooth.nearest_neighbors(:embedding, question_embedding, distance: :euclidean)
+    nearest_photobooths = Photobooth.nearest_neighbors(:embedding, question_embedding, distance: :euclidean)
+
+    # 3. load associated packages
+    nearest_photobooths.includes(:packages)
   end
 end
