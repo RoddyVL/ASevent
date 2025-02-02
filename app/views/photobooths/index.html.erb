@@ -41,6 +41,31 @@
       </div>
     <% end %>
 
-    
+    <!-- Bouton de chat -->
+    <div data-controller="chats-list" style="position: fixed; bottom: 20px; left: 1450px;">
+      <button
+        id="open-chat"
+        style="border: none; background: none; cursor: pointer; z-index: 1050;"
+        data-action="click->chats-list#toggleChat">
+        <img src="<%= asset_path('chat-icon.png') %>" alt="Chat" style="width: 50px; height: 50px;">
+      </button>
+
+      <!-- Overlay pour désactiver les interactions en arrière-plan -->
+      <div id="chat-overlay" class="chat-overlay d-none" data-chats-list-target="chatOverlay"></div>
+
+      <!-- Conteneur pour le chat -->
+      <div
+        class="chatbot text-light d-none"
+        style="position: fixed; bottom: 80px; right: 20px; width: 300px; height: 500px; border-radius: 10px; z-index: 9999; background-color: black;"
+        data-chats-list-target="chatContainer">
+        <h5 class="text-center mt-3">Je suis votre assistant virtuel</h5>
+        <div id="questions" style="overflow-y: auto; max-height: 300px; padding: 10px;">
+          <%= render partial: "questions/question", collection: @questions %>
+        </div>
+        <div style="padding: 10px;">
+          <%= render "questions/form", question: @question %>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

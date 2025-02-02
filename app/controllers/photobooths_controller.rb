@@ -10,6 +10,8 @@ class PhotoboothsController < ApplicationController
   def show
     @photobooth = Photobooth.find(params[:id])
     @packages = @photobooth.packages
+    @questions = Question.all
+    @question = Question.new
   end
 
   def new

@@ -41,9 +41,7 @@
                 <%= u.input :email, label: "Adresse email", required: true, input_html: { class: "form-control" } %>
                 <%= u.input :password, as: :password, label: "Mot de passe", required: true, input_html: { class: "form-control" } %>
               <% end %>
-            </div>
-            <% else %>
-              <p class="text-success">Vous êtes connecté en tant que <%= current_user.email %>.</p>
+          
           <% end %>
 
           <%= render 'booking_fields', f: f %>

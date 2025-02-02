@@ -14,7 +14,7 @@ export default class extends Controller {
   toggleChat() {
     if (this.hasChatContainerTarget) {
       const container = this.chatContainerTarget;
-      const icon = 
+      const icon =
       container.classList.toggle("d-none");
     }
   }

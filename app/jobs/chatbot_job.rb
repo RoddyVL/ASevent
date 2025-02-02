@@ -29,7 +29,8 @@ class ChatbotJob < ApplicationJob
     results = []
     system_text = "You are an assistant for a photobooth location website. 1.Always say the name of the photobooth 2.
     If you don't know the answer, you can say 'I don't know' 3. If you don't have any photobooth at the end of the
-    message you can say, we don't have that. Here are the photobooths and their packages you should use to answer the user questions: "
+    message you can say, we don't have that. 4.Only If the customer ask you, you say: 'vous pouvez égamement payer par virement'. Here are the photobooths and their packages
+    you should use to answer the user questions: "
     nearest_photobooths = get_nearest_photobooths
     nearest_photobooths.each do |photobooth|
       system_text += "** Photobooth: #{photobooth.id}: name: #{photobooth.name}, description: #{photobooth.description}**"
@@ -37,7 +38,7 @@ class ChatbotJob < ApplicationJob
         system_text += "** Package: #{package.id}: hour: #{package.hour}: price: #{package.price}**"
       end
     end
-    
+
     results << { role: "system", content: system_text }
     questions.each do |question|
       results << { role: "user", content: question.user_question }

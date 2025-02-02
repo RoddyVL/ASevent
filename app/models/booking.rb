@@ -6,7 +6,7 @@ class Booking < ApplicationRecord
   # after_create :create_associated_chat
 
   enum paiement_status: { pending: 0, paid: 1 }
-  enum booking_status: { en_attente: 0, livré: 1 }
+  enum booking_status: { en_attente: 0, livré: 1, récupéré: 2 }
 
   validates :address, :date, :time, :package, presence: true
   validates :date, presence: true

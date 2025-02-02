@@ -1,53 +1,37 @@
-<div class="navbar navbar-expand-sm navbar-light navbar-lewagon">
-  <div class="container-fluid">
-    <%= link_to root_path, class: "navbar-brand" do %>
-      <%= image_tag(asset_path('asevent_logo.png'))%>
+<div class="floating-navbar left">
+  <%= link_to root_path, class: "nav-item" do %>
+    <%= image_tag(asset_path('asevent_logo.png'), class: "nav-icon") %>
+  <% end %>
+
+  <% if user_signed_in? %>
+    <%= link_to root_path, class: "nav-item" do %>
+      <i class="fas fa-box-open"></i>
     <% end %>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <%= link_to bookings_path, class: "nav-item" do %>
+      <i class="fas fa-chart-line"></i>
+    <% end %>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto">
-        <% if user_signed_in? %>
-          <li class="nav-item active">
-            <%= link_to "Produits", root_path, class: "nav-link" %>
-          </li>
+    <%= link_to orders_path, class: "nav-item" do %>
+      <%= image_tag("paniers.png", class: "nav-icon") %>
+    <% end %>
 
-          <li class="nav-item active">
-            <%= link_to "dashbord", bookings_path, class: "nav-link" %>
-          </li>
+    <%= link_to "#", class: "nav-item", data: { bs_toggle: "dropdown" } do %>
+      <%= image_tag(asset_path('menu.png'), class: "nav-icon") %>
+    <% end %>
 
-          <li class="nav-item active">
-            <%= link_to image_tag("paniers.png", style: "height: 30px;"), orders_path, class: "nav-link" %>
-          </li>
-
-          <li class="nav-item dropdown">
-            <% unless @is_mobile %>
-              <a href="#" class="avatar" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <%= image_tag(asset_path('menu.png'), class: "avatar", alt: "dropdown menu")%>
-              </a>
-            <% end %>
-
-            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <%= current_user.email %>
-              <%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete}, class: "dropdown-item" %>
-              <%= link_to "messages", messages_path,  class: "dropdown-item"%>
-            </div>
-          </li>
-        <% else %>
-
-            <li class="nav-item active">
-            <%= link_to "Produits", root_path, class: "nav-link text-dark" %>
-          </li>
-
-
-          <li class="nav-item">
-            <%= link_to "Login", new_user_session_path, class: "nav-link text-dark" %>
-          </li>
-        <% end %>
-      </ul>
+    <div class="dropdown-menu dropdown-menu-end">
+      <%= current_user.email %>
+      <%= link_to "Log out", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item" %>
+      <%= link_to "Messages", messages_path, class: "dropdown-item" %>
     </div>
-  </div>
+  <% else %>
+    <%= link_to root_path, class: "nav-item" do %>
+      <i class="fas fa-box-open"></i>
+    <% end %>
+
+    <%= link_to new_user_session_path, class: "nav-item" do %>
+      <i class="fas fa-sign-in-alt"></i>
+    <% end %>
+  <% end %>
 </div>

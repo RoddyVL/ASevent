@@ -13,11 +13,11 @@ module BookingsHelper
   def booking_status_label(status)
     case status
     when "en_attente"
-      content_tag(:span, "en attente", class: "badge bg-primary")
+      content_tag(:span, "en attente", class: "badge bg-warning")
     when "livré"
-      content_tag(:span, "livré", class: "badge bg-success")
+      content_tag(:span, "livré", class: "badge bg-primary")
     else
-      content_tag(:span, "Unknown", class: "badge bg-secondary")
+      content_tag(:span, "récupéré", class: "badge bg-success")
     end
   end
 end

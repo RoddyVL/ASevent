@@ -1,1 +1,9 @@
 // Specific CSS for your home-page
+
+/* Désactiver les flèches du carrousel uniquement sur la page d'index des photobooths */
+.photobooths-index .carousel-control-prev,
+.photobooths-index .carousel-control-next {
+  visibility: hidden; /* Masque les flèches mais conserve leur place */
+  /* Ou pour les retirer complètement : */
+  /* display: none; */
+}

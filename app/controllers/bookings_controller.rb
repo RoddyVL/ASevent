@@ -20,6 +20,8 @@ class BookingsController < ApplicationController
     @message = Message.new
     chat = @booking.chat
     @messages = chat.messages
+    @question = Question.new
+    @questions = current_user.questions
 
     @stripe_publishable_key = ENV['STRIPE_PUBLISHABLE_KEY']
 

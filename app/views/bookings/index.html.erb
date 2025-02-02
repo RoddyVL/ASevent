@@ -39,10 +39,13 @@
             <p class="card-text"><strong>Heure :</strong> <%= b.time %></p>
             <p class="card-text"><strong>Forfait :</strong> <%= b.package.hour %> - <%= b.package.price %>€</p>
             <p class="card-text"><strong>Payment:</strong> <%= payment_status_label(b.paiement_status) %></p>
+            <p class="card-text"><strong>Livraison:</strong> <%= booking_status_label(b.booking_status) %></p>
+
 
             <% if b.paiement_status == "Paid" %>
               <p class="card-text"><strong>Status:</strong> <%= booking_status_label(b.booking_status) %></p>
             <% end %>
+
 
             <% if current_user.admin %>
               <p class="card-text"><strong>Numéro :</strong> <%= b.phone_number %></p>
