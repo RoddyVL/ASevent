@@ -11,7 +11,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body style="background-color: #121212;" data-current-user-id="<%= current_user ? current_user.id : "" %>">
+  <body style="background-color: #F9F2ED;" data-current-user-id="<%= current_user ? current_user.id : "" %>">
   <%= render 'layouts/navbar' %>
     <%= yield %>
     <body class="<%= 'photobooths-index' if controller.controller_name == 'photobooths' && action_name == 'index' %>">

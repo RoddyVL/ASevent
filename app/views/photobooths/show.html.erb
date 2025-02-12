@@ -2,67 +2,73 @@
 <div class="container mt-5">
   <div data-controller="typing-effect" class="text-center mb-4">
     <h1 data-typing-effect-target="text" class="display-4 gold">Modèle <%= @photobooth.name %></h1>
-    <h3 class="text-light">Découvrez notre photobooth et choisissez votre forfait préféré</h3>
+    <h3 >Découvrez notre photobooth et choisissez votre forfait préféré</h3>
   </div>
 
-  <!-- Section des détails du Photobooth -->
-  <div class="card mb-4 shadow-sm custom-card text-align-center">
-    <%# Carrousel Bootstrap pour les photos %>
-    <div id="carousel-<%= @photobooth.id %>" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        <% @photobooth.photos.each_with_index do |photo, index| %>
-          <div class="carousel-item <%= 'active' if index == 0 %>">
-            <%= image_tag(asset_path(photo.image_url), class: "d-block w-100", alt: @photobooth.name) %>
+  <!-- Définir une ligne pour séparer la carte photobooth et les forfaits -->
+  <div class="row">
+    <!-- Colonne pour la carte du photobooth (photo) -->
+    <div class="col-md-9">
+      <div class="card mb-4 shadow-sm custom-card text-align-center" style="max-width: 600px; margin: 0 auto;">
+        <%# Carrousel Bootstrap pour les photos %>
+        <div id="carousel-<%= @photobooth.id %>" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <% @photobooth.photos.each_with_index do |photo, index| %>
+              <div class="carousel-item <%= 'active' if index == 0 %>">
+                <%= image_tag(asset_path(photo.image_url), class: "d-block", alt: @photobooth.name, style: "max-width: 100%; height: auto;") %>
+              </div>
+            <% end %>
+          </div>
+
+          <%# Boutons de navigation %>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carousel-<%= @photobooth.id %>" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carousel-<%= @photobooth.id %>" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+
+        <div class="card-body">
+          <h2 class="card-text"><%= @photobooth.description %></h2>
+
+          <div data-controller='toggle'>
+            <button class="btn button mb-3" data-action="click->toggle#fire">+</button>
+            <div data-toggle-target='toggableElement' class='d-none'>
+              <%= render 'description' %>
+            </div>
+          </div>
+
+          <p class="text-warning"><%= @photobooth.review %></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Colonne pour les forfaits -->
+    <div class="col-md-3">
+      <div class="row">
+        <% @packages.each do |p| %>
+          <div class="col-md-12 mb-3">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title text-secondary"><%= p.hour %></h5>
+                <p class="card-text">
+                  <p><%= humanized_money_with_symbol(p.price) %></p>
+                </p>
+                <%= link_to "Choisir ce forfait", new_photobooth_package_booking_path(@photobooth, p),
+                class: "btn button" %>
+              </div>
+            </div>
           </div>
         <% end %>
       </div>
-
-      <%# Boutons de navigation %>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carousel-<%= @photobooth.id %>" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carousel-<%= @photobooth.id %>" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
     </div>
-
-    <div class="card-body">
-      <h2 class="card-text"><%= @photobooth.description %></h2>
-
-      <div data-controller='toggle'>
-        <button class="btn button mb-3" data-action="click->toggle#fire">+</button>
-        <div data-toggle-target='toggableElement' class='d-none'>
-          <%= render 'description' %>
-        </div>
-      </div>
-
-      <p class="text-warning"><%= @photobooth.review %></p>
-    </div>
-  </div>
-
-  <!-- Section des forfaits -->
-  <div class="row">
-    <% @packages.each do |p| %>
-      <div class="col-md-4">
-        <div class="card mb-3 shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title text-secondary"><%= p.hour %></h5>
-            <p class="card-text">
-            <p><%= humanized_money_with_symbol(p.price) %></p>
-
-            </p>
-            <%= link_to "Choisir ce forfait", new_photobooth_package_booking_path(@photobooth, p),
-            class: "btn button" %>
-          </div>
-        </div>
-      </div>
-    <% end %>
   </div>
 
   <!-- Bouton de retour -->
   <div class="text-center mt-4">
-    <%= link_to "Retour", root_path, class: "btn btn-outline-light mb-3" %>
+    <%= link_to "Retour", root_path, class: "btn btn-outline-dark mb-3" %>
   </div>
 </div>

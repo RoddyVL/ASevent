@@ -3,12 +3,12 @@
   top: 50%;
   left: 0;
   transform: translateY(-50%);
-  background: white;
+  background: transparent;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 10px 0;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  // box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   z-index: 9999;
 }
 
@@ -19,5 +19,11 @@
 }
 
 .nav-icon {
-  height: 30px;
+  height: 50px;
+  transition: transform 0.3s ease; /* Pour une animation fluide */
+}
+
+/* Agrandir l'icône au survol */
+.nav-icon:hover {
+  transform: scale(1.2); /* Agrandit l'icône de 20% */
 }

@@ -1,23 +1,20 @@
 <div class="floating-navbar left">
-  <%= link_to root_path, class: "nav-item" do %>
-    <%= image_tag(asset_path('asevent_logo.png'), class: "nav-icon") %>
-  <% end %>
 
   <% if user_signed_in? %>
     <%= link_to root_path, class: "nav-item" do %>
-      <i class="fas fa-box-open"></i>
+      <%= image_tag("photo.png", class: "nav-icon") %>
     <% end %>
 
     <%= link_to bookings_path, class: "nav-item" do %>
-      <i class="fas fa-chart-line"></i>
+      <%= image_tag("dashboard.png", class: "nav-icon mb-4") %>
     <% end %>
 
     <%= link_to orders_path, class: "nav-item" do %>
-      <%= image_tag("paniers.png", class: "nav-icon") %>
+      <%= image_tag("paniers.png", class: "nav-icon mb-4") %>
     <% end %>
 
     <%= link_to "#", class: "nav-item", data: { bs_toggle: "dropdown" } do %>
-      <%= image_tag(asset_path('menu.png'), class: "nav-icon") %>
+      <%= image_tag(asset_path('menu.png'), class: "nav-icon mb-4") %>
     <% end %>
 
     <div class="dropdown-menu dropdown-menu-end">
@@ -27,11 +24,11 @@
     </div>
   <% else %>
     <%= link_to root_path, class: "nav-item" do %>
-      <i class="fas fa-box-open"></i>
+      <%= image_tag("photo.png", class: "nav-icon") %>
     <% end %>
 
     <%= link_to new_user_session_path, class: "nav-item" do %>
-      <i class="fas fa-sign-in-alt"></i>
+      <%= image_tag("user.png", class: "nav-icon") %>
     <% end %>
   <% end %>
 </div>
